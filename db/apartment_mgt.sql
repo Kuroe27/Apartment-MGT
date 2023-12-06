@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Dec 03, 2023 at 08:50 AM
+-- Generation Time: Dec 06, 2023 at 02:53 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -46,9 +46,42 @@ CREATE TABLE `Invoices` (
   `tenant_id` int(11) DEFAULT NULL,
   `date_created` timestamp NOT NULL DEFAULT current_timestamp(),
   `due_date` date NOT NULL,
+  `current_bill` decimal(10,2) DEFAULT NULL,
+  `prev_bill` decimal(10,2) DEFAULT NULL,
   `total_amount` decimal(10,2) DEFAULT NULL,
-  `status` varchar(10) NOT NULL
+  `status` varchar(10) DEFAULT 'Pending' CHECK (`status` in ('Pending','Paid','Overdue'))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Triggers `Invoices`
+--
+DELIMITER $$
+CREATE TRIGGER `before_invoice_insert` BEFORE INSERT ON `Invoices` FOR EACH ROW BEGIN
+    DECLARE prev_bill DECIMAL(10,2);
+
+    -- Get the previous balance of the tenant
+    SELECT balance INTO prev_bill
+    FROM Tenants
+    WHERE id = NEW.tenant_id;
+
+    -- If the previous balance is NULL, set it to 0
+    IF prev_bill IS NULL THEN
+        SET prev_bill = 0.00;
+    END IF;
+
+    -- Calculate the total amount
+    SET NEW.total_amount = NEW.current_bill + prev_bill;
+
+    -- Update the tenant's balance with the new total amount
+    UPDATE Tenants
+    SET balance = NEW.total_amount
+    WHERE id = NEW.tenant_id;
+
+    -- Set the prev_bill column in Invoices
+    SET NEW.prev_bill = prev_bill;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -63,6 +96,48 @@ CREATE TABLE `Payments` (
   `amount_paid` decimal(10,2) NOT NULL,
   `payment_date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Triggers `Payments`
+--
+DELIMITER $$
+CREATE TRIGGER `after_payment_insert` AFTER INSERT ON `Payments` FOR EACH ROW BEGIN
+    DECLARE remaining_balance DECIMAL(10,2);
+
+    -- Get the remaining balance of the tenant
+    SELECT balance INTO remaining_balance
+    FROM Tenants
+    WHERE id = NEW.tenant_id;
+
+    -- If the remaining balance is NULL, set it to 0
+    IF remaining_balance IS NULL THEN
+        SET remaining_balance = 0.00;
+    END IF;
+
+    -- Deduct the amount paid from the remaining balance
+    SET remaining_balance = remaining_balance - NEW.amount_paid;
+
+    -- Update the tenant's balance with the new remaining balance
+    UPDATE Tenants
+    SET balance = remaining_balance
+    WHERE id = NEW.tenant_id;
+
+    -- Mark the corresponding invoice as Paid
+    UPDATE Invoices
+    SET status = 'Paid'
+    WHERE id = NEW.invoice_id;
+
+    -- Check if the balance is negative and update accordingly
+    IF remaining_balance < 0 THEN
+        -- You can add additional logic here, such as sending notifications or logging
+        -- For simplicity, we set the balance to negative, but you may want to handle this differently based on your application's requirements
+        UPDATE Tenants
+        SET balance = remaining_balance
+        WHERE id = NEW.tenant_id;
+    END IF;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -87,13 +162,35 @@ CREATE TABLE `Tenants` (
   `first_name` varchar(50) NOT NULL,
   `last_name` varchar(50) NOT NULL,
   `email` varchar(100) NOT NULL,
-  `phone_number` varchar(15) NOT NULL,
   `move_in_date` date NOT NULL,
   `balance` decimal(10,2) DEFAULT NULL,
   `room_id` int(11) DEFAULT NULL,
-  `monthly_rate` decimal(10,2) DEFAULT NULL,
   `password` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Triggers `Tenants`
+--
+DELIMITER $$
+CREATE TRIGGER `after_tenant_delete` AFTER DELETE ON `Tenants` FOR EACH ROW BEGIN
+    IF OLD.room_id IS NOT NULL THEN
+        UPDATE Rooms
+        SET status = 'Available'
+        WHERE id = OLD.room_id;
+    END IF;
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `after_tenant_insert` AFTER INSERT ON `Tenants` FOR EACH ROW BEGIN
+    IF NEW.room_id IS NOT NULL THEN
+        UPDATE Rooms
+        SET status = 'Occupied'
+        WHERE id = NEW.room_id;
+    END IF;
+END
+$$
+DELIMITER ;
 
 --
 -- Indexes for dumped tables
@@ -175,20 +272,20 @@ ALTER TABLE `Tenants`
 -- Constraints for table `Invoices`
 --
 ALTER TABLE `Invoices`
-  ADD CONSTRAINT `invoices_ibfk_1` FOREIGN KEY (`tenant_id`) REFERENCES `Tenants` (`id`);
+  ADD CONSTRAINT `invoices_ibfk_1` FOREIGN KEY (`tenant_id`) REFERENCES `Tenants` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `Payments`
 --
 ALTER TABLE `Payments`
-  ADD CONSTRAINT `payments_ibfk_1` FOREIGN KEY (`tenant_id`) REFERENCES `Tenants` (`id`),
-  ADD CONSTRAINT `payments_ibfk_2` FOREIGN KEY (`invoice_id`) REFERENCES `Invoices` (`id`);
+  ADD CONSTRAINT `payments_ibfk_1` FOREIGN KEY (`tenant_id`) REFERENCES `Tenants` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `payments_ibfk_2` FOREIGN KEY (`invoice_id`) REFERENCES `Invoices` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `Tenants`
 --
 ALTER TABLE `Tenants`
-  ADD CONSTRAINT `tenants_ibfk_1` FOREIGN KEY (`room_id`) REFERENCES `Rooms` (`id`);
+  ADD CONSTRAINT `tenants_ibfk_1` FOREIGN KEY (`room_id`) REFERENCES `Rooms` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
