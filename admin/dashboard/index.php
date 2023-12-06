@@ -8,95 +8,103 @@ $result = $crud->read($sql);
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-	<meta charset="utf-8">
-	<title>PHP OOP </title>
-	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="path-to-your-tailwind.css">
+	<title>PHP CRUD using Object Oriented Programming</title>
+	<script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body>
-	<div class="container">
-		<h1 class="page-header text-center">PHP CRUD using Object Oriented Programming</h1>
-		<div class="row">
-			<div class="col-sm-8 col-sm-offset-2">
-				<?php
-				if(isset($_SESSION['message'])) {
-					echo '<div class="alert alert-info text-center">'.$_SESSION['message'].'</div>';
-					unset($_SESSION['message']);
-				}
-				?>
+<body class="bg-gray-200">
+	<div class="container mx-auto p-4">
+		<h1 class="text-2xl font-bold mb-4">PHP CRUD using Object Oriented Programming</h1>
+		<div>
+			<?php
+			if(isset($_SESSION['message'])) {
+				echo '<div class="bg-blue-200 text-blue-800 p-4 mb-4">'.$_SESSION['message'].'</div>';
+				unset($_SESSION['message']);
+			}
+			?>
 
-				<a href="#add" data-toggle="modal" class="btn btn-primary">Add New</a><br><br>
-				<table class="table table-bordered table-striped">
-					<thead>
+			<a href="#add" id="openAddModalBtn" class="bg-green-500 text-white py-2 px-4 rounded"
+				onclick="openAddModal()">Add New</a><br><br>
+
+			<table class="w-full border">
+				<thead>
+					<tr>
+						<th class="border p-2">ID</th>
+						<th class="border p-2">First Name</th>
+						<th class="border p-2">Last Name</th>
+						<th class="border p-2">Email</th>
+						<th class="border p-2">Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php foreach($result as $row): ?>
 						<tr>
-							<th>ID</th>
-							<th>First Name</th>
-							<th>Last Name</th>
-							<th>Email</th>
-							<th>Action</th>
+							<td class="border p-2">
+								<?php echo $row['id']; ?>
+							</td>
+							<td class="border p-2">
+								<?php echo $row['first_name']; ?>
+							</td>
+							<td class="border p-2">
+								<?php echo $row['last_name']; ?>
+							</td>
+							<td class="border p-2">
+								<?php echo $row['email']; ?>
+							</td>
+							<td class="border p-2">
+								<button class="bg-blue-500 text-white py-1 px-2 rounded"
+									onclick="openEditModal('<?php echo $row['id']; ?>')">
+									Edit
+								</button> |
+								<button class="bg-red-500 text-white py-1 px-2 rounded"
+									onclick="openDeleteModal('<?php echo $row['id']; ?>')">
+									Delete
+								</button>
+							</td>
+
+							<?php
+							// Edit modal
+							$modalId = 'edit'.$row['id'];
+							$modalTitle = 'Edit Admin';
+							$formAction = '../../actions/action.php?id='.$row['id'];
+							$submitBtnName = 'edit';
+							$submitBtnText = 'Save';
+							$formFields = [
+								['label' => 'ID', 'name' => 'id', 'type' => 'text', 'value' => $row['id']],
+								['label' => 'First Name', 'name' => 'first_name', 'type' => 'text', 'value' => $row['first_name']],
+								['label' => 'Last Name', 'name' => 'last_name', 'type' => 'text', 'value' => $row['last_name']],
+								['label' => 'Email', 'name' => 'email', 'type' => 'text', 'value' => $row['email']]
+							];
+							include('../../components/modal.php');
+							?>
+
+							<?php
+							// Delete modal
+							$modalId = 'delete'.$row['id'];
+							$modalTitle = 'Delete Admin';
+							$formAction = '../../actions/action.php?id='.$row['id'];
+							$submitBtnName = 'delete';
+							$submitBtnText = 'Delete';
+							$formFields = [
+								['label' => 'ID', 'name' => 'id', 'type' => 'text', 'value' => $row['id']]
+							];
+							include('../../components/modal.php');
+							?>
 						</tr>
-					</thead>
-					<tbody>
-						<?php foreach($result as $row): ?>
-							<tr>
-								<td>
-									<?php echo $row['id']; ?>
-								</td>
-								<td>
-									<?php echo $row['first_name']; ?>
-								</td>
-								<td>
-									<?php echo $row['last_name']; ?>
-								</td>
-								<td>
-									<?php echo $row['email']; ?>
-								</td>
-								<td>
-									<a href="#edit<?php echo $row['id']; ?>" data-toggle="modal"
-										class="btn btn-success">Edit</a> |
-									<a href="#delete<?php echo $row['id']; ?>" data-toggle="modal"
-										class="btn btn-danger">Delete</a>
-								</td>
-
-								<?php
-								// Edit modal
-								$modalId = 'edit'.$row['id'];
-								$modalTitle = 'Edit Admin';
-								$formAction = '../../actions/action.php?id='.$row['id'];
-								$submitBtnName = 'edit';
-								$submitBtnText = 'Save';
-								$formFields = [
-									['label' => 'ID', 'name' => 'id', 'type' => 'text', 'value' => $row['id']],
-									['label' => 'First Name', 'name' => 'first_name', 'type' => 'text', 'value' => $row['first_name']],
-									['label' => 'Last Name', 'name' => 'last_name', 'type' => 'text', 'value' => $row['last_name']],
-									['label' => 'Email', 'name' => 'email', 'type' => 'text', 'value' => $row['email']]
-								];
-								include('../../components/modal.php');
-
-								// Delete modal
-								$modalId = 'delete'.$row['id'];
-								$modalTitle = 'Delete Admin';
-								$formAction = '../../actions/action.php?id='.$row['id'];
-								$submitBtnName = 'delete';
-								$submitBtnText = 'Delete';
-								$formFields = [
-									['label' => 'ID', 'name' => 'id', 'type' => 'text', 'value' => $row['id']]
-								];
-								include('../../components/modal.php');
-								?>
-							</tr>
-						<?php endforeach; ?>
-					</tbody>
-				</table>
-			</div>
+					<?php endforeach; ?>
+				</tbody>
+			</table>
 		</div>
 	</div>
 
 	<?php
-	// Add modal
+	// Add modal content here
 	$modalId = 'add';
 	$modalTitle = 'Add Admin';
 	$formAction = '../../actions/action.php';
@@ -111,8 +119,29 @@ $result = $crud->read($sql);
 	include('../../components/modal.php');
 	?>
 
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+		function openEditModal(id) {
+			toggleModal('edit' + id);
+		}
+
+		function openDeleteModal(id) {
+			toggleModal('delete' + id);
+		}
+
+		function openAddModal() {
+			toggleModal('add');
+		}
+
+		function toggleModal(modalID) {
+			document.getElementById(modalID).classList.toggle("hidden");
+			document.getElementById(modalID + "-backdrop").classList.toggle("hidden");
+			document.getElementById(modalID).classList.toggle("flex");
+			document.getElementById(modalID + "-backdrop").classList.toggle("flex");
+		}
+		function openAddModal() {
+			toggleModal('add');
+		}
+	</script>
 </body>
 
 </html>
