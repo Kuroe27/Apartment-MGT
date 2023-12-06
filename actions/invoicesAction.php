@@ -8,11 +8,10 @@ if(isset($_POST['add'])) {
     $tenant_id = $crud->escape_string($_POST['tenant_id']);
     $date_created = $crud->escape_string($_POST['date_created']);
     $due_date = $crud->escape_string($_POST['due_date']);
-    $total_amount = $crud->escape_string($_POST['total_amount']);
-    $status = $crud->escape_string($_POST['status']);
+    $current_bill = $crud->escape_string($_POST['current_bill']);
 
-    $sql = "INSERT INTO `Invoices`(`tenant_id`, `date_created`, `due_date`, `total_amount`, `status`)
-            VALUES ('$tenant_id', '$date_created', '$due_date', '$total_amount', '$status')";
+    $sql = "INSERT INTO `Invoices`(`tenant_id`, `date_created`, `due_date`, `current_bill`, `status`)
+            VALUES ('$tenant_id', '$date_created', '$due_date', '$current_bill', 'pending')";
 
     if($crud->execute($sql)) {
         $_SESSION['message'] = 'Invoice added successfully';
@@ -26,14 +25,14 @@ if(isset($_POST['add'])) {
     $tenant_id = $crud->escape_string($_POST['tenant_id']);
     $date_created = $crud->escape_string($_POST['date_created']);
     $due_date = $crud->escape_string($_POST['due_date']);
-    $total_amount = $crud->escape_string($_POST['total_amount']);
+    $current_bill = $crud->escape_string($_POST['current_bill']);
     $status = $crud->escape_string($_POST['status']);
 
     $sql = "UPDATE Invoices SET 
             tenant_id = '$tenant_id', 
             date_created = '$date_created', 
             due_date = '$due_date', 
-            total_amount = '$total_amount', 
+            current_bill = '$current_bill', 
             status = '$status' 
             WHERE id = '$id'";
 
