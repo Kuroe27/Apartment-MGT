@@ -1,53 +1,39 @@
-<div class="modal fade" id="<?php echo $modalId; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <center>
-                    <h4 class="modal-title" id="myModalLabel">
-                        <?php echo $modalTitle; ?>
-                    </h4>
-                </center>
-            </div>
-            <div class="modal-body">
-                <?php if (!empty($formFields)): ?>
-                <div class="container-fluid">
-                    <form method="POST" action="<?php echo $formAction; ?>">
-                        <?php foreach ($formFields as $field): ?>
-                        <div class="row">
-                            <div class="col-lg-2">
-                                <label class="control-label" style="position:relative; top:7px;">
-                                    <?php echo $field['label']; ?>:
-                                </label>
-                            </div>
-                            <div class="col-lg-10">
-                                <?php
-                                        $fieldValue = isset($field['value']) ? $field['value'] : '';
-                                        if ($field['type'] == 'textarea') {
-                                            echo '<textarea class="form-control" name="' . $field['name'] . '">' . $fieldValue . '</textarea>';
-                                        } elseif ($field['type'] == 'select') {
-                                            echo '<select class="form-control" name="' . $field['name'] . '">';
-                                            echo $field['options'];
-                                            echo '</select>';
-                                        } else {
-                                            echo '<input type="' . $field['type'] . '" class="form-control" name="' . $field['name'] . '" value="' . $fieldValue . '">';
-                                        }
-                                        ?>
-                            </div>
+<div id="<?php echo $modalId; ?>"
+    class="hidden fixed inset-0 bg-gray-700 bg-opacity-75 flex items-center justify-center">
+    <div class="bg-white p-8 rounded shadow">
+        <button type="button" class="absolute top-4 right-4" onclick="toggleModal('<?php echo $modalId; ?>')"
+            aria-hidden="true">&times;</button>
+        <h4 class="text-lg font-bold mb-4">
+            <?php echo $modalTitle; ?>
+        </h4>
+        <?php if(!empty($formFields)): ?>
+            <div>
+                <form method="POST" action="<?php echo $formAction; ?>">
+                    <?php foreach($formFields as $field): ?>
+                        <div class="mb-4">
+                            <label class="block text-sm font-bold mb-2">
+                                <?php echo $field['label']; ?>:
+                            </label>
+                            <?php
+                            $fieldValue = isset($field['value']) ? $field['value'] : '';
+                            if($field['type'] == 'textarea') {
+                                echo '<textarea class="w-full p-2 border" name="'.$field['name'].'">'.$fieldValue.'</textarea>';
+                            } else {
+                                echo '<input class="w-full p-2 border" type="'.$field['type'].'" name="'.$field['name'].'" value="'.$fieldValue.'">';
+                            }
+                            ?>
                         </div>
-                        <div style="height:10px;"></div>
-                        <?php endforeach; ?>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                            <button type="submit" name="<?php echo $submitBtnName; ?>" class="btn btn-primary">
-                                <?php echo $submitBtnText; ?>
-                            </button>
-                        </div>
-                    </form>
-                </div>
-                <?php endif; ?>
+                    <?php endforeach; ?>
+                    <div>
+                        <button type="button" class="bg-gray-500 text-white py-2 px-4 rounded mr-2"
+                            onclick="toggleModal('<?php echo $modalId; ?>')">Cancel</button>
+                        <button type="submit" name="<?php echo $submitBtnName; ?>"
+                            class="bg-blue-500 text-white py-2 px-4 rounded">
+                            <?php echo $submitBtnText; ?>
+                        </button>
+                    </div>
+                </form>
             </div>
-        </div>
+        <?php endif; ?>
     </div>
 </div>
