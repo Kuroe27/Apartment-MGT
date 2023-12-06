@@ -9,9 +9,9 @@ function getTenantOptions($crud, $selectedTenantId = null) {
     $tenants = $crud->read($sql);
 
     $options = '<option value="">Select Tenant</option>';
-    foreach ($tenants as $tenant) {
+    foreach($tenants as $tenant) {
         $selected = ($selectedTenantId == $tenant['id']) ? 'selected' : '';
-        $options .= '<option value="' . $tenant['id'] . '" ' . $selected . '>' . $tenant['tenant_name'] . '</option>';
+        $options .= '<option value="'.$tenant['id'].'" '.$selected.'>'.$tenant['tenant_name'].'</option>';
     }
 
     return $options;
@@ -50,6 +50,8 @@ $result = $crud->read($sql);
                             <th>Tenant</th>
                             <th>Date Created</th>
                             <th>Due Date</th>
+                            <th>Current Bill</th>
+                            <th>Previous Bill</th>
                             <th>Total Amount</th>
                             <th>Status</th>
                             <th>Action</th>
@@ -57,21 +59,39 @@ $result = $crud->read($sql);
                     </thead>
                     <tbody>
                         <?php foreach($result as $row): ?>
-                        <tr>
-                            <td><?php echo $row['id']; ?></td>
-                            <td><?php echo $row['tenant_name']; ?></td>
-                            <td><?php echo $row['date_created']; ?></td>
-                            <td><?php echo $row['due_date']; ?></td>
-                            <td><?php echo $row['total_amount']; ?></td>
-                            <td><?php echo $row['status']; ?></td>
-                            <td>
-                                <a href="#edit<?php echo $row['id']; ?>" data-toggle="modal"
-                                    class="btn btn-success">Edit</a> |
-                                <a href="#delete<?php echo $row['id']; ?>" data-toggle="modal"
-                                    class="btn btn-danger">Delete</a>
-                            </td>
+                            <tr>
+                                <td>
+                                    <?php echo $row['id']; ?>
+                                </td>
+                                <td>
+                                    <?php echo $row['tenant_name']; ?>
+                                </td>
+                                <td>
+                                    <?php echo $row['date_created']; ?>
+                                </td>
+                                <td>
+                                    <?php echo $row['due_date']; ?>
+                                </td>
+                                <td>
+                                    <?php echo $row['current_bill']; ?>
+                                </td>
+                                <td>
+                                    <?php echo $row['prev_bill']; ?>
+                                </td>
+                                <td>
+                                    <?php echo $row['total_amount']; ?>
+                                </td>
+                                <td>
+                                    <?php echo $row['status']; ?>
+                                </td>
+                                <td>
+                                    <a href="#edit<?php echo $row['id']; ?>" data-toggle="modal"
+                                        class="btn btn-success">Edit</a> |
+                                    <a href="#delete<?php echo $row['id']; ?>" data-toggle="modal"
+                                        class="btn btn-danger">Delete</a>
+                                </td>
 
-                            <?php
+                                <?php
                                 $modalId = 'edit'.$row['id'];
                                 $modalTitle = 'Edit Invoice';
                                 $formAction = '../../actions/invoicesAction.php?id='.$row['id'];
@@ -96,8 +116,8 @@ $result = $crud->read($sql);
                                     ['label' => 'ID', 'name' => 'id', 'type' => 'text', 'value' => $row['id']]
                                 ];
                                 include('../../components/modal.php');
-                            ?>
-                        </tr>
+                                ?>
+                            </tr>
                         <?php endforeach; ?>
                     </tbody>
                 </table>
@@ -115,8 +135,7 @@ $result = $crud->read($sql);
         ['label' => 'Tenant', 'name' => 'tenant_id', 'type' => 'select', 'options' => getTenantOptions($crud)],
         ['label' => 'Date Created', 'name' => 'date_created', 'type' => 'date'],
         ['label' => 'Due Date', 'name' => 'due_date', 'type' => 'date'],
-        ['label' => 'Total Amount', 'name' => 'total_amount', 'type' => 'text'],
-        ['label' => 'Status', 'name' => 'status', 'type' => 'text']
+        ['label' => 'Total Amount', 'name' => 'current_bill', 'type' => 'text'],
     ];
     include('../../components/modal.php');
     ?>
