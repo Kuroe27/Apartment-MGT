@@ -1,11 +1,12 @@
 <div id="<?php echo $modalId; ?>"
-    class="hidden fixed inset-0 bg-gray-700 bg-opacity-75 flex items-center justify-center">
-    <div class="bg-white p-8 rounded shadow">
+    class="hidden fixed inset-0 bg-gray-700 bg-opacity-75 flex items-center justify-center ">
+    <div class="bg-white p-8 rounded shadow w-full sm:w-1/2 m-4">
         <button type="button" class="absolute top-4 right-4" onclick="toggleModal('<?php echo $modalId; ?>')"
             aria-hidden="true">&times;</button>
         <h4 class="text-lg font-bold mb-4">
             <?php echo $modalTitle; ?>
         </h4>
+
         <?php if(!empty($formFields)): ?>
             <div>
                 <form method="POST" action="<?php echo $formAction; ?>">
@@ -14,14 +15,24 @@
                             <label class="block text-sm font-bold mb-2">
                                 <?php echo $field['label']; ?>:
                             </label>
-                            <?php
-                            $fieldValue = isset($field['value']) ? $field['value'] : '';
-                            if($field['type'] == 'textarea') {
-                                echo '<textarea class="w-full p-2 border" name="'.$field['name'].'">'.$fieldValue.'</textarea>';
-                            } else {
-                                echo '<input class="w-full p-2 border" type="'.$field['type'].'" name="'.$field['name'].'" value="'.$fieldValue.'">';
-                            }
-                            ?>
+                            <?php if($field['type'] === 'select'): ?>
+                                <select class="w-full p-2 border" name="<?php echo $field['name']; ?>" required>
+                                    <?php foreach($field['options'] as $value => $label): ?>
+                                        <option value="<?= $value ?>" <?= isset($field['selected']) && $value == $field['selected'] ? 'selected' : '' ?>>
+                                            <?= $label ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            <?php else: ?>
+                                <?php
+                                $fieldValue = isset($field['value']) ? $field['value'] : '';
+                                if($field['type'] == 'textarea') {
+                                    echo '<textarea class="w-full p-2 border" name="'.$field['name'].'">'.$fieldValue.'</textarea>';
+                                } else {
+                                    echo '<input class="w-full p-2 border" type="'.$field['type'].'" name="'.$field['name'].'" value="'.$fieldValue.'" required>';
+                                }
+                                ?>
+                            <?php endif; ?>
                         </div>
                     <?php endforeach; ?>
                     <div>
@@ -35,5 +46,6 @@
                 </form>
             </div>
         <?php endif; ?>
+
     </div>
 </div>
