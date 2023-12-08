@@ -10,10 +10,10 @@ if(isset($_POST['add'])) {
     $email = $crud->escape_string($_POST['email']);
     $move_in_date = $crud->escape_string($_POST['move_in_date']);
     $room_id = $crud->escape_string($_POST['room_id']);
-    $password = $crud->escape_string($_POST['password']);
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-    $sql = "INSERT INTO `Tenants`(`first_name`, `last_name`, `email`, `move_in_date`, `balance`, `room_id`,  `password`)
-            VALUES ('$first_name', '$last_name', '$email', '$move_in_date', '0', '$room_id',  '$password')";
+    $sql = "INSERT INTO `Tenants`(`first_name`, `last_name`, `email`, `move_in_date`, `balance`, `room_id`, `password`)
+            VALUES ('$first_name', '$last_name', '$email', '$move_in_date', '0', '$room_id', '$password')";
 
     if($crud->execute($sql)) {
         $_SESSION['message'] = 'Tenant added successfully';
@@ -27,22 +27,18 @@ if(isset($_POST['add'])) {
     $first_name = $crud->escape_string($_POST['first_name']);
     $last_name = $crud->escape_string($_POST['last_name']);
     $email = $crud->escape_string($_POST['email']);
-    $phone_number = $crud->escape_string($_POST['phone_number']);
     $move_in_date = $crud->escape_string($_POST['move_in_date']);
     $balance = $crud->escape_string($_POST['balance']);
     $room_id = $crud->escape_string($_POST['room_id']);
-    $monthly_rate = $crud->escape_string($_POST['monthly_rate']);
     $password = $crud->escape_string($_POST['password']);
 
     $sql = "UPDATE Tenants SET 
             first_name = '$first_name', 
             last_name = '$last_name', 
             email = '$email', 
-            phone_number = '$phone_number', 
             move_in_date = '$move_in_date', 
             balance = '$balance', 
             room_id = '$room_id', 
-            monthly_rate = '$monthly_rate', 
             password = '$password' 
             WHERE id = '$id'";
 
