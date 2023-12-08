@@ -1,3 +1,9 @@
+<?php
+if(!isset($_SESSION['admin_id'])) {
+    header("Location: ../login.php	");
+    exit();
+}
+?>
 <aside
     class=" bg-white w-60 h-screen fixed   flex flex-col justify-between transition-transform -translate-x-full  shadow border-gray-200 sm:translate-x-0"
     id="sidebar">
@@ -83,10 +89,18 @@
 
     </ul>
 
-    <ul>
-        <li class="px-4 py-2 border-b-1 border-gray-400 ">
-            <a class="text-gray-500" href="./logout.php">Logout</a>
 
+    <ul class="mb-2">
+
+
+        <li class="px-4 flex   py-2 border-b-1 border-t-1 border-gray-400 rounded-lg mt-2 ">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24" class="mr-2">
+                <path
+                    d="M440-440v-400h80v400h-80Zm40 320q-74 0-139.5-28.5T226-226q-49-49-77.5-114.5T120-480q0-80 33-151t93-123l56 56q-48 40-75 97t-27 121q0 116 82 198t198 82q117 0 198.5-82T760-480q0-64-26.5-121T658-698l56-56q60 52 93 123t33 151q0 74-28.5 139.5t-77 114.5q-48.5 49-114 77.5T480-120Z"
+                    fill="#ff3030" />
+            </svg>
+            <a href="../logout.php" class="w-full text-gray-500 text-lg">Logout</a>
         </li>
+        </div>
     </ul>
 </aside>

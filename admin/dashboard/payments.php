@@ -13,17 +13,14 @@ $tenantOptions = [];
 foreach($tenants as $tenant) {
     $tenantOptions[$tenant['id']] = $tenant['first_name'].' '.$tenant['last_name'];
 }
-$sqlInvoices = "SELECT i.id, i.tenant_id, t.first_name, t.last_name 
-                FROM Invoices i
-                JOIN Tenants t ON i.tenant_id = t.id
-                WHERE i.status != 'Paid'";
+$sqlInvoices = "SELECT i.id, i.tenant_id, t.first_name, t.last_name FROM Invoices i
+                JOIN Tenants t ON i.tenant_id = t.id";
 $invoices = $crud->read($sqlInvoices);
 $invoiceOptions = [];
 
 foreach($invoices as $invoice) {
     $invoiceOptions[$invoice['id']] = $invoice['id'].' - '.$invoice['first_name'].' '.$invoice['last_name'];
 }
-
 
 
 
