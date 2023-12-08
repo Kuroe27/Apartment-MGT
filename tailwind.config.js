@@ -13,9 +13,13 @@ module.exports = {
           300: "#AAC4FF",
           400: "#B1B2FF",
           500: "#98A8F8",
+          600: "#eef1ff4d",
         },
+
       },
     },
   },
-  plugins: [],
+  plugins: [
+
+  ],
 };
