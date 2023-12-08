@@ -172,6 +172,7 @@ foreach($rooms as $room) {
         ['label' => 'First Name', 'name' => 'first_name', 'type' => 'text'],
         ['label' => 'Last Name', 'name' => 'last_name', 'type' => 'text'],
         ['label' => 'Email', 'name' => 'email', 'type' => 'email'],
+        ['label' => 'Password', 'name' => 'password', 'type' => 'password'],
         ['label' => 'Move In Date', 'name' => 'move_in_date', 'type' => 'date'],
         ['label' => 'Balance', 'name' => 'balance', 'type' => 'number'],
         ['label' => 'Room ID', 'name' => 'room_id', 'type' => 'select', 'options' => $roomOptions],
