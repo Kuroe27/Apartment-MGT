@@ -19,7 +19,7 @@ if(isset($_POST['add'])) {
         $_SESSION['message'] = 'Cannot add admin';
     }
 
-    header('location: ../admin/dashboard');
+    header('location: ../admin/dashboard/admin.php');
 } elseif(isset($_POST['edit'])) {
     $id = $crud->escape_string($_POST['id']);
     $first_name = $crud->escape_string($_POST['first_name']);
@@ -36,7 +36,7 @@ if(isset($_POST['add'])) {
         $_SESSION['message'] = 'Cannot update admin';
     }
 
-    header('location: ../admin/dashboard');
+    header('location: ../admin/dashboard/admin.php');
 } elseif(isset($_POST['delete'])) {
     $id = $crud->escape_string($_POST['id']);
 
@@ -49,7 +49,7 @@ if(isset($_POST['add'])) {
         $_SESSION['message'] = 'Cannot delete admin';
     }
 
-    header('location: ../admin/dashboard');
+    header('location: ../admin/dashboard/admin.php');
 } else {
     $_SESSION['message'] = 'Invalid action';
     header('location: ');
