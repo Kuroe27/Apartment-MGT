@@ -139,7 +139,9 @@ function getStatusColorClass($status) {
                                         ['label' => 'ID', 'name' => 'id', 'type' => 'text', 'value' => $payment['id']],
                                         ['label' => 'Tenant ID', 'name' => 'tenant_id', 'type' => 'select', 'selected' => $selectedTenantId, 'options' => $tenantOptions],
                                         ['label' => 'Payment Date', 'name' => 'payment_date', 'type' => 'date', 'value' => $payment['payment_date']],
-                                        ['label' => 'Amount Paid', 'name' => 'amount_paid', 'type' => 'text', 'value' => $payment['amount_paid']],
+                                        ['label' => 'Amount Paid', 'name' => 'amount_paid', 'type' => 'number', 'value' => $payment['amount_paid']],
+                                        ['label' => '', 'name' => 'invoice_id', 'type' => 'hidden', 'value' => $payment['invoice_id']], // Hidden field
+                                
                                     ];
 
                                     include('../../components/modal.php');

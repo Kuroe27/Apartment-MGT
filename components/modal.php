@@ -13,7 +13,7 @@
                     <?php foreach($formFields as $field): ?>
                         <div class="mb-4">
                             <label class="block text-sm font-bold mb-2">
-                                <?php echo $field['label']; ?>:
+                                <?php echo $field['label']; ?>
                             </label>
                             <?php if($field['type'] === 'select'): ?>
                                 <select class="w-full p-2 border" name="<?php echo $field['name']; ?>" required>

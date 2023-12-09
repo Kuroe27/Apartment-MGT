@@ -21,27 +21,23 @@ if(isset($_POST['add'])) {
     header('location: ../admin/dashboard/invoices.php');
 } elseif(isset($_POST['edit'])) {
     $id = $crud->escape_string($_POST['id']);
-    $tenant_id = $crud->escape_string($_POST['tenant_id']);
-    $date_created = $crud->escape_string($_POST['date_created']);
-    $due_date = $crud->escape_string($_POST['due_date']);
-    $current_bill = $crud->escape_string($_POST['current_bill']);
-    $prev_bill = $crud->escape_string($_POST['prev_bill']); 
-    $status = $crud->escape_string($_POST['status']);
+    $tenant_id = $crud->escape_string($_POST['tenant_id']); // Assuming you have a field in your form for tenant_id
+    $payment_date = $crud->escape_string($_POST['payment_date']);
+    $amount_paid = $crud->escape_string($_POST['amount_paid']);
 
-    $sql = "UPDATE Invoices SET 
-            date_created = '$date_created', 
-            due_date = '$due_date', 
-            current_bill = '$current_bill',
-            prev_bill = '$prev_bill'
+    $sql = "UPDATE Payments SET 
+            tenant_id = '$tenant_id', 
+            payment_date = '$payment_date', 
+            amount_paid = '$amount_paid'
             WHERE id = '$id'";
 
     if($crud->execute($sql)) {
-        $_SESSION['message'] = 'Invoice updated successfully';
+        $_SESSION['message'] = 'Payment updated successfully';
     } else {
-        $_SESSION['message'] = 'Cannot update invoice';
+        $_SESSION['message'] = 'Cannot update payment';
     }
 
-    header('location: ../admin/dashboard/invoices.php');
+    header('location: ../admin/dashboard/payments.php');
 
 } elseif(isset($_POST['delete'])) {
     $id = $crud->escape_string($_POST['id']);
