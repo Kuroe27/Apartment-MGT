@@ -21,7 +21,7 @@ if(isset($_POST['add'])) {
     header('location: ../admin/dashboard/invoices.php');
 } elseif(isset($_POST['edit'])) {
     $id = $crud->escape_string($_POST['id']);
-    $tenant_id = $crud->escape_string($_POST['tenant_id']); // Assuming you have a field in your form for tenant_id
+    $tenant_id = $crud->escape_string($_POST['tenant_id']); 
     $payment_date = $crud->escape_string($_POST['payment_date']);
     $amount_paid = $crud->escape_string($_POST['amount_paid']);
 
