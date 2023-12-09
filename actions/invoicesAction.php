@@ -21,23 +21,40 @@ if(isset($_POST['add'])) {
     header('location: ../admin/dashboard/invoices.php');
 } elseif(isset($_POST['edit'])) {
     $id = $crud->escape_string($_POST['id']);
-    $tenant_id = $crud->escape_string($_POST['tenant_id']); 
-    $payment_date = $crud->escape_string($_POST['payment_date']);
-    $amount_paid = $crud->escape_string($_POST['amount_paid']);
+    $date_created = $crud->escape_string($_POST['date_created']);
+    $due_date = $crud->escape_string($_POST['due_date']);
+    $current_bill = $crud->escape_string($_POST['current_bill']);
 
-    $sql = "UPDATE Payments SET 
-            tenant_id = '$tenant_id', 
-            payment_date = '$payment_date', 
-            amount_paid = '$amount_paid'
+    // Calculate prev_bill and total_amount based on existing values
+    $sqlGetPreviousValues = "SELECT current_bill, prev_bill, total_amount, tenant_id FROM Invoices WHERE id = '$id'";
+    $previousValues = $crud->read($sqlGetPreviousValues);
+
+    $prev_bill = $previousValues[0]['current_bill'];
+    $total_amount = $prev_bill + $current_bill;
+    $tenant_id = $previousValues[0]['tenant_id'];
+
+    // Update the values in the database
+    $sql = "UPDATE Invoices SET 
+            date_created = '$date_created', 
+            due_date = '$due_date', 
+            current_bill = '$current_bill',
+            prev_bill = '$prev_bill',
+            total_amount = '$total_amount'
             WHERE id = '$id'";
 
     if($crud->execute($sql)) {
-        $_SESSION['message'] = 'Payment updated successfully';
+        $_SESSION['message'] = 'Invoice updated successfully';
     } else {
-        $_SESSION['message'] = 'Cannot update payment';
+        $_SESSION['message'] = 'Cannot update invoice';
     }
 
-    header('location: ../admin/dashboard/payments.php');
+    // Update tenant's balance based on the new total amount
+    $sqlUpdateBalance = "UPDATE Tenants SET balance = '$total_amount' WHERE id = '$tenant_id'";
+    $crud->execute($sqlUpdateBalance);
+
+    header('location: ../admin/dashboard/invoices.php');
+
+
 
 } elseif(isset($_POST['delete'])) {
     $id = $crud->escape_string($_POST['id']);

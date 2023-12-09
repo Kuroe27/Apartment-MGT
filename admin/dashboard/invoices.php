@@ -145,8 +145,8 @@ function getStatusColorClass($status) {
                                         ['label' => 'Date Created', 'name' => 'date_created', 'type' => 'text', 'value' => $invoice['date_created']],
                                         ['label' => 'Due Date', 'name' => 'due_date', 'type' => 'date', 'value' => $invoice['due_date']],
                                         ['label' => 'Current Bill', 'name' => 'current_bill', 'type' => 'number', 'value' => $invoice['current_bill']],
-                                        ['label' => 'Previous Bill', 'name' => 'prev_bill', 'type' => 'number', 'value' => $invoice['prev_bill']],
-                                        ['label' => 'Total Amount', 'name' => 'total_amount', 'type' => 'number', 'value' => $invoice['total_amount']],
+                                        ['label' => '', 'name' => 'prev_bill', 'type' => 'hidden', 'value' => $invoice['prev_bill']],
+                                        ['label' => '', 'name' => 'total_amount', 'type' => 'hidden', 'value' => $invoice['total_amount']],
                                     ];
 
                                     include('../../components/modal.php');
