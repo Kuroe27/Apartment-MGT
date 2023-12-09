@@ -10,7 +10,6 @@ if(isset($_POST['add'])) {
     $email = $crud->escape_string($_POST['email']);
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-    // Insert data into the database
     $sql = "INSERT INTO Admin (first_name, last_name, email, password) VALUES ('$first_name', '$last_name', '$email', '$password')";
 
     if($crud->execute($sql)) {
@@ -27,7 +26,6 @@ if(isset($_POST['add'])) {
     $email = $crud->escape_string($_POST['email']);
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-    // Update data in the database
     $sql = "UPDATE Admin SET first_name = '$first_name', last_name = '$last_name', email = '$email', password = '$password' WHERE id = '$id'";
 
     if($crud->execute($sql)) {
@@ -40,7 +38,6 @@ if(isset($_POST['add'])) {
 } elseif(isset($_POST['delete'])) {
     $id = $crud->escape_string($_POST['id']);
 
-    // Delete data from the database
     $sql = "DELETE FROM Admin WHERE id = '$id'";
 
     if($crud->execute($sql)) {

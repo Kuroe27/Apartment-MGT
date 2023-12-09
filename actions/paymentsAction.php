@@ -9,7 +9,6 @@ if(isset($_POST['add'])) {
     $amount_paid = $crud->escape_string($_POST['amount_paid']);
     $payment_date = $crud->escape_string($_POST['payment_date']);
 
-    // Fetch the tenant ID based on the selected invoice ID
     $sqlFetchTenantId = "SELECT tenant_id FROM Invoices WHERE id = '$invoice_id'";
     $result = $crud->read($sqlFetchTenantId);
 

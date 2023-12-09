@@ -99,7 +99,6 @@ $paymentChartData = json_encode([
 		<section class="content flex flex-column px-4">
 			<div class="flex mb-4 w-full text-white">
 
-				<!-- Total Tenants Card -->
 				<div
 					class="card flex p-4 bg-gradient-to-r from-pallete-500 to-pallete-700 rounded-md shadow-md w-1/4 mr-4 h-40 items-center">
 					<svg xmlns="http://www.w3.org/2000/svg" height="full" viewBox="0 -960 960 960" width="60"
@@ -116,7 +115,6 @@ $paymentChartData = json_encode([
 					</div>
 				</div>
 
-				<!-- Total Rooms Card -->
 				<div
 					class="card flex p-4 bg-gradient-to-r from-pallete-500 to-pallete-700 rounded-md shadow-md w-1/4 mr-4 h-40 items-center">
 					<svg xmlns="http://www.w3.org/2000/svg" height="full" viewBox="0 -960 960 960" width="60"
@@ -134,7 +132,6 @@ $paymentChartData = json_encode([
 					</div>
 				</div>
 
-				<!-- Total Profit Card -->
 				<div
 					class="card flex p-4 bg-gradient-to-r from-pallete-500 to-pallete-700 rounded-md shadow-md w-1/4 mr-4 h-40 items-center">
 					<svg xmlns="http://www.w3.org/2000/svg" height="full" viewBox="0 -960 960 960" width="60"
@@ -153,7 +150,6 @@ $paymentChartData = json_encode([
 					</div>
 				</div>
 
-				<!-- Total Unpaid Invoices Card -->
 				<div
 					class="card flex p-4 bg-gradient-to-r from-pallete-500 to-pallete-700 rounded-md shadow-md w-1/4 mr-4 h-40 items-center">
 					<svg xmlns="http://www.w3.org/2000/svg" height="full" viewBox="0 -960 960 960" width="60"
@@ -181,7 +177,6 @@ $paymentChartData = json_encode([
 				</div>
 			</div>
 
-			<!-- Add this where you want to display the pie chart -->
 			<div class=" h-full  w-1/5 ">
 				<div class="bg-white p-4 shadow rounded-md h-1/2 mt-4">
 					<h1 class="text-xl">Invoice Status</h1>

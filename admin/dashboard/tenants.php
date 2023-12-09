@@ -118,7 +118,6 @@ foreach($rooms as $room) {
                                     </tr>
 
                                     <?php
-                                    // Edit modal
                                     $modalId = 'edit'.$tenant['id'];
                                     $modalTitle = 'Edit Tenant';
                                     $formAction = '../../actions/tenantsAction.php?id='.$tenant['id'];
@@ -140,7 +139,6 @@ foreach($rooms as $room) {
 
                                     include('../../components/modal.php');
 
-                                    // Delete modal
                                     $modalId = 'delete'.$tenant['id'];
                                     $modalTitle = 'Delete Tenant';
                                     $formAction = '../../actions/tenantsAction.php?id='.$tenant['id'];

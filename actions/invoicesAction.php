@@ -25,7 +25,7 @@ if(isset($_POST['add'])) {
     $date_created = $crud->escape_string($_POST['date_created']);
     $due_date = $crud->escape_string($_POST['due_date']);
     $current_bill = $crud->escape_string($_POST['current_bill']);
-    $prev_bill = $crud->escape_string($_POST['prev_bill']); // Assuming you have a field in your form for prev_bill
+    $prev_bill = $crud->escape_string($_POST['prev_bill']); 
     $status = $crud->escape_string($_POST['status']);
 
     $sql = "UPDATE Invoices SET 

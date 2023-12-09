@@ -70,11 +70,11 @@ function getStatusColorClass($status) {
                         unset($_SESSION['message']);
                     }
                     ?>
-                    <!-- Add New Invoice Button -->
+
+
                     <a href="#add" id="openAddModalBtn" class="bg-pallete-400 text-white py-2 px-4 rounded"
                         onclick="openAddModal()">Add New</a><br><br>
 
-                    <!-- Display Invoices in Table -->
                     <div class="relative overflow-x-auto">
                         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead class="text-xs text-gray-700 uppercase">
@@ -132,7 +132,6 @@ function getStatusColorClass($status) {
                                     </tr>
 
                                     <?php
-                                    // Edit modal
                                     $modalId = 'edit'.$invoice['id'];
                                     $modalTitle = 'Edit Invoice';
                                     $formAction = '../../actions/invoicesAction.php?id='.$invoice['id'];
@@ -152,7 +151,6 @@ function getStatusColorClass($status) {
 
                                     include('../../components/modal.php');
 
-                                    // Delete modal
                                     $modalId = 'delete'.$invoice['id'];
                                     $modalTitle = 'Delete Invoice';
                                     $formAction = '../../actions/invoicesAction.php?id='.$invoice['id'];
@@ -195,5 +193,4 @@ function getStatusColorClass($status) {
 </html>
 
 <?php
-// Function to get the background color class based on the status
 ?>

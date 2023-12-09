@@ -96,7 +96,6 @@ $result = $crud->read($sql);
                                     </td>
 
                                     <?php
-                                    // Edit modal
                                     $modalId = 'edit'.$row['id'];
                                     $modalTitle = 'Edit Admin';
                                     $formAction = '../../actions/action.php?id='.$row['id'];
@@ -112,7 +111,6 @@ $result = $crud->read($sql);
                                     ?>
 
                                     <?php
-                                    // Delete modal
                                     $modalId = 'delete'.$row['id'];
                                     $modalTitle = 'Delete Admin';
                                     $formAction = '../../actions/action.php?id='.$row['id'];
@@ -134,7 +132,6 @@ $result = $crud->read($sql);
 
     </main>
     <?php
-    // Add modal content here
     $modalId = 'add';
     $modalTitle = 'Add Admin';
     $formAction = '../../actions/action.php';

@@ -2,13 +2,11 @@
 session_start();
 include_once('../conn/Crud.php');
 
-// Check if the user is already logged in, redirect to the main page if true
 if(isset($_SESSION['tenant_id'])) {
     header("Location: ./dashboard/");
     exit();
 }
 
-// Handle login logic
 if($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $password = $_POST['password'];
@@ -20,16 +18,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     if($result && count($result) == 1) {
         $hashedPassword = $result[0]['password'];
 
-        // Verify the entered password against the hashed password
         if(password_verify($password, $hashedPassword)) {
-            // Valid login, set session variables and redirect to the main page
             $_SESSION['tenant_id'] = $result[0]['id'];
             header("Location: ./dashboard/");
             exit();
         }
     }
 
-    // Invalid login, display an error message
     $error_message = "Invalid email or password.";
 }
 ?>

@@ -88,20 +88,17 @@ $result = $crud->read($sql);
                                         </td>
 
                                         <?php
-                                        // Edit modal
                                         $modalId = 'edit'.$row['id'];
                                         $modalTitle = 'Edit Rooms';
                                         $formAction = '../../actions/roomsAction.php?id='.$row['id'];
                                         $submitBtnName = 'edit';
                                         $submitBtnText = 'Save';
 
-                                        // Define status options
                                         $statusOptions = [
                                             'Occupied' => 'Occupied',
                                             'Available' => 'Available',
                                         ];
 
-                                        // Use a separate variable for selected status
                                         $selectedStatus = $row['status'];
 
                                         $formFields = [
@@ -112,8 +109,6 @@ $result = $crud->read($sql);
                                         ];
                                         include('../../components/modal.php');
 
-
-                                        // Delete modal
                                         $modalId = 'delete'.$row['id'];
                                         $modalTitle = 'Delete Rooms';
                                         $formAction = '../../actions/roomsAction.php?id='.$row['id'];
@@ -134,22 +129,20 @@ $result = $crud->read($sql);
     </main>
 
     <?php
-    // Add modal content here
     $modalId = 'add';
     $modalTitle = 'Add Rooms';
     $formAction = '../../actions/roomsAction.php';
     $submitBtnName = 'add';
     $submitBtnText = 'Save';
-    // Initialize selected status as null
     $selectedStatus = null;
     $formFields = [
         ['label' => 'Rent', 'name' => 'rent', 'type' => 'number'],
         ['label' => 'Status', 'name' => 'status', 'type' => 'select', 'options' => [
-            '' => 'Select Status', // Initial "Select" option
+            '' => 'Select Status', 
             'Available' => 'Available',
             'Occupied' => 'Occupied',
 
-        ], 'selected' => $selectedStatus, 'required' => true], // Make it required
+        ], 'selected' => $selectedStatus, 'required' => true], 
     ];
     include('../../components/modal.php');
     ?>
