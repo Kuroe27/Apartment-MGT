@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Dec 06, 2023 at 02:53 AM
+-- Generation Time: Dec 10, 2023 at 11:57 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -187,6 +187,22 @@ CREATE TRIGGER `after_tenant_insert` AFTER INSERT ON `Tenants` FOR EACH ROW BEGI
         UPDATE Rooms
         SET status = 'Occupied'
         WHERE id = NEW.room_id;
+    END IF;
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `after_tenant_update` AFTER UPDATE ON `Tenants` FOR EACH ROW BEGIN
+    IF NEW.room_id IS NOT NULL AND NEW.room_id != OLD.room_id THEN
+        -- Mark the new room as 'Occupied'
+        UPDATE Rooms
+        SET status = 'Occupied'
+        WHERE id = NEW.room_id;
+
+        -- Mark the old room as 'Available'
+        UPDATE Rooms
+        SET status = 'Available'
+        WHERE id = OLD.room_id;
     END IF;
 END
 $$
