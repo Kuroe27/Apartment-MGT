@@ -78,11 +78,9 @@ function getStatusColorClass($status) {
                         unset($_SESSION['message']);
                     }
                     ?>
-                    <!-- Add New Payment Button -->
                     <a href="#add" id="openAddModalBtn" class="bg-pallete-400 text-white py-2 px-4 rounded"
                         onclick="openAddModal()">Add New</a><br><br>
 
-                    <!-- Display Payments in Table -->
                     <div class="relative overflow-x-auto">
                         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead class="text-xs text-gray-700 uppercase">
@@ -126,11 +124,9 @@ function getStatusColorClass($status) {
                                     </tr>
 
                                     <?php
-                                    // Edit modal
                                     $modalId = 'edit'.$payment['id'];
                                     $modalTitle = 'Edit Payment';
-                                    $formAction = '../../actions/paymentsAction.php?id='.$payment['id']; // Update to paymentsAction.php
-                                    $submitBtnName = 'edit';
+                                    $formAction = '../../actions/paymentsAction.php?id='.$payment['id']; 
                                     $submitBtnText = 'Save';
 
                                     $selectedTenantId = $payment['tenant_id'];
@@ -140,16 +136,15 @@ function getStatusColorClass($status) {
                                         ['label' => 'Tenant ID', 'name' => 'tenant_id', 'type' => 'select', 'selected' => $selectedTenantId, 'options' => $tenantOptions],
                                         ['label' => 'Payment Date', 'name' => 'payment_date', 'type' => 'date', 'value' => $payment['payment_date']],
                                         ['label' => 'Amount Paid', 'name' => 'amount_paid', 'type' => 'number', 'value' => $payment['amount_paid']],
-                                        ['label' => '', 'name' => 'invoice_id', 'type' => 'hidden', 'value' => $payment['invoice_id']], // Hidden field
+                                        ['label' => '', 'name' => 'invoice_id', 'type' => 'hidden', 'value' => $payment['invoice_id']], 
                                 
                                     ];
 
                                     include('../../components/modal.php');
 
-                                    // Delete modal
                                     $modalId = 'delete'.$payment['id'];
                                     $modalTitle = 'Delete Payment';
-                                    $formAction = '../../actions/paymentsAction.php?id='.$payment['id']; // Update to paymentsAction.php
+                                    $formAction = '../../actions/paymentsAction.php?id='.$payment['id']; 
                                     $submitBtnName = 'delete';
                                     $submitBtnText = 'Delete';
                                     $formFields = [
@@ -170,17 +165,15 @@ function getStatusColorClass($status) {
     <?php
     $modalId = 'add';
     $modalTitle = 'Add Payment';
-    $formAction = '../../actions/paymentsAction.php'; // Update to paymentsAction.php
+    $formAction = '../../actions/paymentsAction.php'; 
     $submitBtnName = 'add';
     $submitBtnText = 'Save';
 
 
 
 
-    // Add the Invoice ID field as a dropdown
     $formFields = [
-        // Remove the 'Tenant ID' field
-        ['label' => 'Invoice ID', 'name' => 'invoice_id', 'type' => 'select', 'options' => $invoiceOptions], // Change to dropdown
+        ['label' => 'Invoice ID', 'name' => 'invoice_id', 'type' => 'select', 'options' => $invoiceOptions], 
         ['label' => 'Payment Date', 'name' => 'payment_date', 'type' => 'date'],
         ['label' => 'Amount Paid', 'name' => 'amount_paid', 'type' => 'text'],
     ];

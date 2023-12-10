@@ -28,7 +28,6 @@ $prev_bill = $invoice['prev_bill'];
 $total_amount = $invoice['total_amount'];
 $tenant_name = $invoice['first_name'].' '.$invoice['last_name'];
 
-// You can add more invoice details as needed
 
 ?>
 <!DOCTYPE html>
@@ -40,7 +39,6 @@ $tenant_name = $invoice['first_name'].' '.$invoice['last_name'];
     <link rel="stylesheet" href="path-to-your-tailwind.css">
     <title>Invoice</title>
     <link href="../../styles/output.css" rel="stylesheet" />
-    <!-- Add your additional styles or fonts as needed -->
 </head>
 
 <body class="bg-gray-200 font-sans">

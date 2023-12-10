@@ -26,7 +26,6 @@ $payment_date = $payment['payment_date'];
 $amount_paid = $payment['amount_paid'];
 $tenant_name = $payment['first_name'].' '.$payment['last_name'];
 
-// You can add more payment details as needed
 
 ?>
 <!DOCTYPE html>
@@ -38,7 +37,6 @@ $tenant_name = $payment['first_name'].' '.$payment['last_name'];
     <link rel="stylesheet" href="path-to-your-tailwind.css">
     <title>Payment Receipt</title>
     <link href="../../styles/output.css" rel="stylesheet" />
-    <!-- Add your additional styles or fonts as needed -->
 </head>
 
 <body class="bg-gray-200 font-sans">

@@ -23,7 +23,6 @@ if($result && count($result) == 1) {
     exit();
 }
 
-// Check which section to display based on the clicked link
 $display_section = '';
 if(isset($_GET['section'])) {
     $display_section = $_GET['section'];
@@ -199,13 +198,11 @@ if(isset($_GET['section'])) {
     </div>
 
     <script>
-        // JavaScript function to show a specific section and hide others
         function showSection(sectionName) {
             document.getElementById('dashboardSection').style.display = (sectionName === 'dashboard') ? 'block' : 'none';
             document.getElementById('paymentsSection').style.display = (sectionName === 'payments') ? 'block' : 'none';
             document.getElementById('invoicesSection').style.display = (sectionName === 'invoices') ? 'block' : 'none';
 
-            // Optionally, you can update the activeLi class for the clicked list item
             var listItems = document.getElementById('sectionList').getElementsByTagName('li');
             for (var i = 0; i < listItems.length; i++) {
                 listItems[i].classList.remove('activeLi');
@@ -213,7 +210,6 @@ if(isset($_GET['section'])) {
             event.target.parentElement.classList.add('activeLi');
         }
 
-        // JavaScript function to print the page
         function printPage(url) {
             var printWindow = window.open(url, '_blank');
             printWindow.print();

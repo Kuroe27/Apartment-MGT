@@ -25,7 +25,6 @@ if(isset($_POST['add'])) {
     $due_date = $crud->escape_string($_POST['due_date']);
     $current_bill = $crud->escape_string($_POST['current_bill']);
 
-    // Calculate prev_bill and total_amount based on existing values
     $sqlGetPreviousValues = "SELECT current_bill, prev_bill, total_amount, tenant_id FROM Invoices WHERE id = '$id'";
     $previousValues = $crud->read($sqlGetPreviousValues);
 
@@ -33,7 +32,6 @@ if(isset($_POST['add'])) {
     $total_amount = $prev_bill + $current_bill;
     $tenant_id = $previousValues[0]['tenant_id'];
 
-    // Update the values in the database
     $sql = "UPDATE Invoices SET 
             date_created = '$date_created', 
             due_date = '$due_date', 
@@ -48,7 +46,6 @@ if(isset($_POST['add'])) {
         $_SESSION['message'] = 'Cannot update invoice';
     }
 
-    // Update tenant's balance based on the new total amount
     $sqlUpdateBalance = "UPDATE Tenants SET balance = '$total_amount' WHERE id = '$tenant_id'";
     $crud->execute($sqlUpdateBalance);
 
