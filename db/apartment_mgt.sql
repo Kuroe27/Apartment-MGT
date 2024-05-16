@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Dec 10, 2023 at 11:57 AM
+-- Generation Time: May 16, 2024 at 02:35 PM
 -- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- PHP Version: 8.0.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `apartment_mgt`
+-- Database: `fasafs`
 --
 
 -- --------------------------------------------------------
@@ -82,6 +82,20 @@ CREATE TRIGGER `before_invoice_insert` BEFORE INSERT ON `Invoices` FOR EACH ROW 
 END
 $$
 DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Maintenance`
+--
+
+CREATE TABLE `Maintenance` (
+  `id` int(11) NOT NULL,
+  `tenant_id` int(11) NOT NULL,
+  `description` text NOT NULL,
+  `status` varchar(50) DEFAULT 'Pending' CHECK (`status` in ('Pending','Approved','Denied')),
+  `schedule_date` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -168,16 +182,6 @@ CREATE TABLE `Tenants` (
   `password` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-
-CREATE TABLE `Maintenance` (
-    `id` int(11) NOT NULL,
-    `tenant_id` int(11) NOT NULL,
-    `description` text NOT NULL,
-    `status` varchar(50) DEFAULT 'Pending' CHECK (`status` in ('Pending','Approved','Denied')),
-    `schedule_date` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-
 --
 -- Triggers `Tenants`
 --
@@ -218,6 +222,22 @@ END
 $$
 DELIMITER ;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Visitor_Log`
+--
+
+CREATE TABLE `Visitor_Log` (
+  `id` int(11) NOT NULL,
+  `visitor_name` varchar(100) NOT NULL,
+  `visitor_email` varchar(100) DEFAULT NULL,
+  `visitor_phone` varchar(20) DEFAULT NULL,
+  `visit_date` date NOT NULL,
+  `purpose` text DEFAULT NULL,
+  `tenant_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 --
 -- Indexes for dumped tables
 --
@@ -235,8 +255,9 @@ ALTER TABLE `Invoices`
   ADD PRIMARY KEY (`id`),
   ADD KEY `tenant_id` (`tenant_id`);
 
-
-  
+--
+-- Indexes for table `Maintenance`
+--
 ALTER TABLE `Maintenance`
   ADD PRIMARY KEY (`id`),
   ADD KEY `tenant_id` (`tenant_id`);
@@ -263,6 +284,13 @@ ALTER TABLE `Tenants`
   ADD KEY `room_id` (`room_id`);
 
 --
+-- Indexes for table `Visitor_Log`
+--
+ALTER TABLE `Visitor_Log`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `tenant_id` (`tenant_id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -272,14 +300,16 @@ ALTER TABLE `Tenants`
 ALTER TABLE `Admin`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
-
-ALTER TABLE `Maintenance`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
 --
 -- AUTO_INCREMENT for table `Invoices`
 --
 ALTER TABLE `Invoices`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `Maintenance`
+--
+ALTER TABLE `Maintenance`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -298,6 +328,12 @@ ALTER TABLE `Rooms`
 -- AUTO_INCREMENT for table `Tenants`
 --
 ALTER TABLE `Tenants`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `Visitor_Log`
+--
+ALTER TABLE `Visitor_Log`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -322,6 +358,12 @@ ALTER TABLE `Payments`
 --
 ALTER TABLE `Tenants`
   ADD CONSTRAINT `tenants_ibfk_1` FOREIGN KEY (`room_id`) REFERENCES `Rooms` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Constraints for table `Visitor_Log`
+--
+ALTER TABLE `Visitor_Log`
+  ADD CONSTRAINT `visitor_log_ibfk_1` FOREIGN KEY (`tenant_id`) REFERENCES `Tenants` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

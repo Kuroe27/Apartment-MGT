@@ -1,13 +1,13 @@
 <?php
 session_start();
-include_once('../conn/Crud.php');
+include_once ('../conn/Crud.php');
 
-if(isset($_SESSION['admin_id'])) {
+if (isset($_SESSION['admin_id'])) {
     header("Location: ./dashboard/");
     exit();
 }
 
-if($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
@@ -15,10 +15,10 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     $sql = "SELECT * FROM Admin WHERE email = '$email'";
     $result = $crud->read($sql);
 
-    if($result && count($result) == 1) {
-        $hashedPassword = $result[0]['password'];
+    if ($result && count($result) == 1) {
+        $storedPassword = $result[0]['password'];
 
-        if(password_verify($password, $hashedPassword)) {
+        if ($password == $storedPassword) {
             $_SESSION['admin_id'] = $result[0]['id'];
             header("Location: ./dashboard/");
             exit();
@@ -28,6 +28,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     $error_message = "Invalid email or password.";
 }
 ?>
+
 <html>
 
 <head>
@@ -52,8 +53,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 <div class="mx-auto max-w-xs">
                     <?php
-                    if(isset($error_message)) {
-                        echo '<div class="mb-4 bg-red-500 text-xl p-4 border-red-950 border text-center text-white">'.$error_message.'</div>';
+                    if (isset($error_message)) {
+                        echo '<div class="mb-4 bg-red-500 text-xl p-4 border-red-950 border text-center text-white">' . $error_message . '</div>';
                     }
                     ?>
 
