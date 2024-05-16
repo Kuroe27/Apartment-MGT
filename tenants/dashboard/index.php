@@ -95,6 +95,9 @@ if(isset($_GET['section'])) {
             <li class="text-gray- py-2 mx-2 <?php echo ($display_section == 'invoices') ? 'activeLi' : ''; ?>">
                 <a href="#" onclick="showSection('invoices')">Invoices</a>
             </li>
+            <li class="text-gray- py-2 mx-2 <?php echo ($display_section == 'invoices') ? 'activeLi' : ''; ?>">
+                <a href="#" onclick="showSection('maintenance')">Maintenance</a>
+            </li>
         </ul>
     </header>
 
