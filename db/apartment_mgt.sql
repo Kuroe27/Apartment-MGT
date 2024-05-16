@@ -170,7 +170,7 @@ CREATE TABLE `Tenants` (
 
 
 CREATE TABLE `Maintenance` (
-    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `id` int(11) NOT NULL,
     `tenant_id` int(11) NOT NULL,
     `description` text NOT NULL,
     `status` varchar(50) DEFAULT 'Pending' CHECK (`status` in ('Pending','Approved','Denied')),
@@ -270,6 +270,10 @@ ALTER TABLE `Tenants`
 -- AUTO_INCREMENT for table `Admin`
 --
 ALTER TABLE `Admin`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+
+ALTER TABLE `Maintenance`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
