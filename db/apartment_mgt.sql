@@ -168,6 +168,18 @@ CREATE TABLE `Tenants` (
   `password` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+
+CREATE TABLE `maintenance` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `tenant_id` int(11) NOT NULL,
+    `description` text NOT NULL,
+    `status` varchar(50) DEFAULT 'Pending' CHECK (`status` in ('Pending','Approved','Denied')),
+    `schedule_date` datetime DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`tenant_id`) REFERENCES `Tenants` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
 --
 -- Triggers `Tenants`
 --
