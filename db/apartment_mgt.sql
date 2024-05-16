@@ -169,14 +169,12 @@ CREATE TABLE `Tenants` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
-CREATE TABLE `maintenance` (
+CREATE TABLE `Maintenance` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `tenant_id` int(11) NOT NULL,
     `description` text NOT NULL,
     `status` varchar(50) DEFAULT 'Pending' CHECK (`status` in ('Pending','Approved','Denied')),
-    `schedule_date` datetime DEFAULT NULL,
-    PRIMARY KEY (`id`),
-    FOREIGN KEY (`tenant_id`) REFERENCES `Tenants` (`id`)
+    `schedule_date` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
@@ -234,6 +232,12 @@ ALTER TABLE `Admin`
 -- Indexes for table `Invoices`
 --
 ALTER TABLE `Invoices`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `tenant_id` (`tenant_id`);
+
+
+  
+ALTER TABLE `Maintenance`
   ADD PRIMARY KEY (`id`),
   ADD KEY `tenant_id` (`tenant_id`);
 
