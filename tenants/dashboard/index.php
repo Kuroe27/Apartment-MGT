@@ -206,6 +206,7 @@ $visitors = $crud->read($sql);
         </section>
 
 
+<<<<<<< Updated upstream
         <section class="mx-auto max-w-7xl py-6 w-full" id="maintenanceSection" <?php echo ($display_section == 'maintenance') ? '' : 'style="display: none;"'; ?>>
             <h2 class="text-2xl font-bold mb-4 mt-4">Maintenance</h2>
             <button onclick="document.getElementById('maintenanceModal').style.display = 'block'"
@@ -311,6 +312,59 @@ $visitors = $crud->read($sql);
                 </div>
             </div>
         </section>
+=======
+       <!-- Updated Maintenance Section -->
+<section class="mx-auto max-w-7xl py-6 w-full" id="maintenanceSection" <?php echo ($display_section == 'maintenance') ? '' : 'style="display: none;"'; ?>>
+    <h2 class="text-2xl font-bold mb-4 mt-4">Maintenance</h2>
+    <button onclick="document.getElementById('maintenanceModal').style.display = 'block'"
+        class="bg-blue-500 text-white py-2 px-4 rounded mb-4">Request Maintenance</button>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <?php
+        $maintenance_sql = "SELECT * FROM Maintenance WHERE tenant_id = '$tenant_id'";
+        $maintenance_result = $crud->read($maintenance_sql);
+
+        if($maintenance_result) {
+            foreach($maintenance_result as $maintenance) {
+                echo '<div class="text-lg shadow-lg rounded-md flex items-center bg-white p-4 h-18 py-10 ">';
+                echo '<div class="mr-4">';
+                echo '<span class="mb-4">Description: '.$maintenance['description'].'</span>';
+                echo '<p>Status: '.$maintenance['status'].'</p>';
+                echo '<p>Scheduled Date: '.$maintenance['schedule_date'].'</p>';
+                echo '</div>';
+                echo '</div>';
+            }
+        } else {
+            echo '<p>No ongoing maintenance.</p>';
+        }
+        ?>
+    </div>
+</section>
+
+<!-- Updated Maintenance Request Modal -->
+<div id="maintenanceModal" class="hidden fixed inset-0 bg-gray-700 bg-opacity-75 flex items-center justify-center">
+    <div class="bg-white p-8 rounded shadow w-full sm:w-1/2 m-4">
+        <button type="button" class="absolute top-4 right-4"
+            onclick="document.getElementById('maintenanceModal').style.display = 'none'" aria-hidden="true">
+            &times;
+        </button>
+        <h4 class="text-lg font-bold mb-4">Request Maintenance</h4>
+        <form method="POST" action="../../actions/maintenanceAction_tenants.php">
+            <div class="mb-4">
+                <label class="block text-sm font-bold mb-2">Description</label>
+                <textarea class="w-full p-2 border" name="description" required></textarea>
+            </div>
+            <!-- Hidden input for identifying the action -->
+            <input type="hidden" name="addMaintenance" value="1">
+            <div class="flex justify-end">
+                <button type="button" class="bg-gray-500 text-white py-2 px-4 rounded mr-2"
+                    onclick="document.getElementById('maintenanceModal').style.display = 'none'">Cancel</button>
+                <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+>>>>>>> Stashed changes
 
     </main>
     </div>
