@@ -99,7 +99,7 @@ $result = $crud->read($sql);
                                     <?php
                                     $modalId = 'edit' . $row['id'];
                                     $modalTitle = 'Schedule date for maintenance';
-                                    $formAction = '../../actions/maintenanceAction_admin?id=' . $row['id'];
+                                    $formAction = '../../actions/maintenanceAction_admin.php?id=' . $row['id'];
                                     $submitBtnName = 'edit';
                                     $submitBtnText = 'Submit';
                                     $formFields = [

@@ -110,9 +110,7 @@ if (!isset($_SESSION['admin_id'])) {
                 <a href="admin.php" class="w-full">Admin</a>
             </li>
 
-<<<<<<< Updated upstream
 
-=======
             
             <li
                 class="px-4 flex   py-2 border-b-1 border-t-1 border-gray-400 rounded-lg mt-2  <?= basename($_SERVER['PHP_SELF']) == 'admin.php' ? 'active"' : 'text-gray-500 hover:bg-pallete-100'; ?>">
@@ -123,7 +121,6 @@ if (!isset($_SESSION['admin_id'])) {
                 </svg>
                 <a href="maintenance.php" class="w-full">Maintenance</a>
             </li>
->>>>>>> Stashed changes
         </div>
 
 

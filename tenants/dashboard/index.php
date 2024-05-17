@@ -206,7 +206,6 @@ $visitors = $crud->read($sql);
         </section>
 
 
-<<<<<<< Updated upstream
         <section class="mx-auto max-w-7xl py-6 w-full" id="maintenanceSection" <?php echo ($display_section == 'maintenance') ? '' : 'style="display: none;"'; ?>>
             <h2 class="text-2xl font-bold mb-4 mt-4">Maintenance</h2>
             <button onclick="document.getElementById('maintenanceModal').style.display = 'block'"
@@ -312,7 +311,6 @@ $visitors = $crud->read($sql);
                 </div>
             </div>
         </section>
-=======
        <!-- Updated Maintenance Section -->
 <section class="mx-auto max-w-7xl py-6 w-full" id="maintenanceSection" <?php echo ($display_section == 'maintenance') ? '' : 'style="display: none;"'; ?>>
     <h2 class="text-2xl font-bold mb-4 mt-4">Maintenance</h2>
@@ -364,7 +362,6 @@ $visitors = $crud->read($sql);
     </div>
 </div>
 
->>>>>>> Stashed changes
 
     </main>
     </div>

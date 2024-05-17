@@ -1,3 +1,4 @@
+
 <?php
 session_start();
 include_once('../conn/Crud.php');
@@ -14,7 +15,7 @@ if(isset($_POST['edit'])) {
     if($crud->execute($sql)) {
         $_SESSION['message'] = 'Maintenance request updated successfully';
     } else {
-        $_SESSION['message'] = 'Cannot update maintenance request';
+        $_SESSION['message'] = 'Cannot update maintenance request: ' . $crud->error(); // Add error message
     }
 
     header('location: ../admin/dashboard/maintenance.php');
@@ -27,12 +28,12 @@ if(isset($_POST['edit'])) {
     if($crud->execute($sql)) {
         $_SESSION['message'] = 'Maintenance request denied';
     } else {
-        $_SESSION['message'] = 'Cannot deny maintenance request';
+        $_SESSION['message'] = 'Cannot deny maintenance request: ' . $crud->error(); // Add error message
     }
 
     header('location: ../admin/dashboard/maintenance.php');
 } else {
     $_SESSION['message'] = 'Invalid action';
-    header('location: ');
+    header('location: '); // Specify a valid location
 }
 ?>
