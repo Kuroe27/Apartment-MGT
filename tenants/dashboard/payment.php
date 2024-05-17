@@ -1,8 +1,8 @@
 <?php
 session_start();
-include_once('../../conn/Crud.php');
+include_once ('../../conn/Crud.php');
 
-if(!isset($_GET['payment_id'])) {
+if (!isset($_GET['payment_id'])) {
     header("Location: ./index.php");
     exit();
 }
@@ -16,7 +16,7 @@ $payment_sql = "SELECT Payments.*, Tenants.first_name, Tenants.last_name
                 WHERE Payments.id = '$payment_id'";
 $payment_result = $crud->read($payment_sql);
 
-if(!$payment_result || count($payment_result) != 1) {
+if (!$payment_result || count($payment_result) != 1) {
     header("Location: ./index.php");
     exit();
 }
@@ -24,7 +24,7 @@ if(!$payment_result || count($payment_result) != 1) {
 $payment = $payment_result[0];
 $payment_date = $payment['payment_date'];
 $amount_paid = $payment['amount_paid'];
-$tenant_name = $payment['first_name'].' '.$payment['last_name'];
+$tenant_name = $payment['first_name'] . ' ' . $payment['last_name'];
 
 
 ?>
