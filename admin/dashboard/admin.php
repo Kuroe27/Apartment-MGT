@@ -1,6 +1,6 @@
 <?php
 session_start();
-include_once('../../conn/Crud.php');
+include_once ('../../conn/Crud.php');
 
 $crud = new Crud();
 $sql = "SELECT * FROM Admin";
@@ -23,7 +23,7 @@ $result = $crud->read($sql);
 </head>
 
 <body class="h-100vh flex">
-    <?php include_once('../../components/sidebar.php') ?>
+    <?php include_once ('../../components/sidebar.php') ?>
 
     <main class="ml-0   sm:ml-60 w-full">
         <nav class="container px-4 h-16  w-full  mt-4 z-10 flex items-center text-center justify-center mx-auto">
@@ -51,8 +51,8 @@ $result = $crud->read($sql);
 
                 <div class="bg-white  p-4 shadow rounded-md">
                     <?php
-                    if(isset($_SESSION['message'])) {
-                        echo '<div class="bg-blue-200 text-blue-800 p-4 mb-4">'.$_SESSION['message'].'</div>';
+                    if (isset($_SESSION['message'])) {
+                        echo '<div class="bg-blue-200 text-blue-800 p-4 mb-4">' . $_SESSION['message'] . '</div>';
                         unset($_SESSION['message']);
                     }
                     ?>
@@ -71,7 +71,7 @@ $result = $crud->read($sql);
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach($result as $row): ?>
+                            <?php foreach ($result as $row): ?>
                                 <tr class="bg-white border-t">
                                     <td class="w-4 p-4 pl-6">
                                         <?php echo $row['id']; ?>
@@ -96,9 +96,9 @@ $result = $crud->read($sql);
                                     </td>
 
                                     <?php
-                                    $modalId = 'edit'.$row['id'];
+                                    $modalId = 'edit' . $row['id'];
                                     $modalTitle = 'Edit Admin';
-                                    $formAction = '../../actions/action.php?id='.$row['id'];
+                                    $formAction = '../../actions/action.php?id=' . $row['id'];
                                     $submitBtnName = 'edit';
                                     $submitBtnText = 'Save';
                                     $formFields = [
@@ -107,19 +107,19 @@ $result = $crud->read($sql);
                                         ['label' => 'Last Name', 'name' => 'last_name', 'type' => 'text', 'value' => $row['last_name']],
                                         ['label' => 'Email', 'name' => 'email', 'type' => 'email', 'value' => $row['email']]
                                     ];
-                                    include('../../components/modal.php');
+                                    include ('../../components/modal.php');
                                     ?>
 
                                     <?php
-                                    $modalId = 'delete'.$row['id'];
+                                    $modalId = 'delete' . $row['id'];
                                     $modalTitle = 'Delete Admin';
-                                    $formAction = '../../actions/action.php?id='.$row['id'];
+                                    $formAction = '../../actions/action.php?id=' . $row['id'];
                                     $submitBtnName = 'delete';
                                     $submitBtnText = 'Delete';
                                     $formFields = [
                                         ['label' => 'ID', 'name' => 'id', 'type' => 'text', 'value' => $row['id']]
                                     ];
-                                    include('../../components/modal.php');
+                                    include ('../../components/modal.php');
                                     ?>
                                 </tr>
                             <?php endforeach; ?>
@@ -143,7 +143,7 @@ $result = $crud->read($sql);
         ['label' => 'Email', 'name' => 'email', 'type' => 'email'],
         ['label' => 'Password', 'name' => 'password', 'type' => 'password']
     ];
-    include('../../components/modal.php');
+    include ('../../components/modal.php');
     ?>
 
     <script src="../../scripts/index.js"></script>

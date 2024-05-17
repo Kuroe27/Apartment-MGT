@@ -1,8 +1,8 @@
 <?php
 session_start();
-include_once('../../conn/Crud.php');
+include_once ('../../conn/Crud.php');
 
-if(!isset($_SESSION['tenant_id'])) {
+if (!isset($_SESSION['tenant_id'])) {
     header("Location: ./login.php");
     exit();
 }
@@ -12,9 +12,9 @@ $tenant_id = $_SESSION['tenant_id'];
 $sql = "SELECT * FROM Tenants WHERE id = '$tenant_id'";
 $result = $crud->read($sql);
 
-if($result && count($result) == 1) {
+if ($result && count($result) == 1) {
     $tenant = $result[0];
-    $tenant_name = $tenant['first_name'].' '.$tenant['last_name'];
+    $tenant_name = $tenant['first_name'] . ' ' . $tenant['last_name'];
     $room_rent = $tenant['balance'];
     $balance = $tenant['balance'];
     $room_id = $tenant['room_id'];
@@ -24,9 +24,13 @@ if($result && count($result) == 1) {
 }
 
 $display_section = '';
-if(isset($_GET['section'])) {
+if (isset($_GET['section'])) {
     $display_section = $_GET['section'];
 }
+
+$tenant_id = $_SESSION['tenant_id'];
+$sql = "SELECT * FROM Visitor_Log WHERE tenant_id = '$tenant_id'";
+$visitors = $crud->read($sql);
 ?>
 
 <!DOCTYPE html>
@@ -98,6 +102,9 @@ if(isset($_GET['section'])) {
             <li class="text-gray- py-2 mx-2 <?php echo ($display_section == 'invoices') ? 'activeLi' : ''; ?>">
                 <a href="#" onclick="showSection('maintenance')">Maintenance</a>
             </li>
+            <li class="text-gray- py-2 mx-2 <?php echo ($display_section == 'visitors') ? 'activeLi' : ''; ?>">
+                <a href="#" onclick="showSection('visitors')">Visitors</a>
+            </li>
         </ul>
     </header>
 
@@ -149,16 +156,16 @@ if(isset($_GET['section'])) {
                 $payment_sql = "SELECT * FROM Payments WHERE tenant_id = '$tenant_id'";
                 $payment_result = $crud->read($payment_sql);
 
-                if($payment_result) {
-                    foreach($payment_result as $payment) {
+                if ($payment_result) {
+                    foreach ($payment_result as $payment) {
                         echo '<div class="text-lg shadow-lg rounded-md flex items-center bg-white p-4 h-18 py-10 ">';
 
                         echo '<div class="mr-4">';
-                        echo '<span class="mb-4">Payment Date: '.$payment['payment_date'].'</span>';
-                        echo '<p class="text-3xl">Amount Paid: ₱'.$payment['amount_paid'].'</p>';
+                        echo '<span class="mb-4">Payment Date: ' . $payment['payment_date'] . '</span>';
+                        echo '<p class="text-3xl">Amount Paid: ₱' . $payment['amount_paid'] . '</p>';
                         echo '</div>';
                         echo '<div class="text-center flex">';
-                        echo '<button onclick="printPayment(\'payment.php?payment_id='.$payment['id'].'\')"><svg fill="gray"xmlns="http://www.w3.org/2000/svg" height="40" viewBox="0 -960 960 960" width="40"><path d="M640-640v-120H320v120h-80v-200h480v200h-80Zm-480 80h640-640Zm560 100q17 0 28.5-11.5T760-500q0-17-11.5-28.5T720-540q-17 0-28.5 11.5T680-500q0 17 11.5 28.5T720-460Zm-80 260v-160H320v160h320Zm80 80H240v-160H80v-240q0-51 35-85.5t85-34.5h560q51 0 85.5 34.5T880-520v240H720v160Zm80-240v-160q0-17-11.5-28.5T760-560H200q-17 0-28.5 11.5T160-520v160h80v-80h480v80h80Z"/></svg> </button>';
+                        echo '<button onclick="printPayment(\'payment.php?payment_id=' . $payment['id'] . '\')"><svg fill="gray"xmlns="http://www.w3.org/2000/svg" height="40" viewBox="0 -960 960 960" width="40"><path d="M640-640v-120H320v120h-80v-200h480v200h-80Zm-480 80h640-640Zm560 100q17 0 28.5-11.5T760-500q0-17-11.5-28.5T720-540q-17 0-28.5 11.5T680-500q0 17 11.5 28.5T720-460Zm-80 260v-160H320v160h320Zm80 80H240v-160H80v-240q0-51 35-85.5t85-34.5h560q51 0 85.5 34.5T880-520v240H720v160Zm80-240v-160q0-17-11.5-28.5T760-560H200q-17 0-28.5 11.5T160-520v160h80v-80h480v80h80Z"/></svg> </button>';
                         echo '</div>';
                         echo '</div>';
                     }
@@ -177,16 +184,16 @@ if(isset($_GET['section'])) {
                     $invoice_sql = "SELECT * FROM Invoices WHERE tenant_id = '$tenant_id' AND status NOT LIKE 'Paid'";
                     $invoice_result = $crud->read($invoice_sql);
 
-                    if($invoice_result) {
-                        foreach($invoice_result as $invoice) {
+                    if ($invoice_result) {
+                        foreach ($invoice_result as $invoice) {
                             echo '<div class="text-lg shadow-lg rounded-md flex items-center bg-white p-4 h-18 py-10">';
 
                             echo '<div class="mr-4">';
-                            echo '<span class="mb-4">Due Date: '.$invoice['due_date'].'</span>';
-                            echo '<p class="text-3xl">Total Amount: ₱'.$invoice['total_amount'].'</p>';
+                            echo '<span class="mb-4">Due Date: ' . $invoice['due_date'] . '</span>';
+                            echo '<p class="text-3xl">Total Amount: ₱' . $invoice['total_amount'] . '</p>';
                             echo '</div>';
                             echo '<div class="text-center flex">';
-                            echo '<button onclick="printPage(\'invoice.php?invoice_id='.$invoice['id'].'\')"><svg fill="gray" xmlns="http://www.w3.org/2000/svg" height="40" viewBox="0 -960 960 960" width="40"><path d="M640-640v-120H320v120h-80v-200h480v200h-80Zm-480 80h640-640Zm560 100q17 0 28.5-11.5T760-500q0-17-11.5-28.5T720-540q-17 0-28.5 11.5T680-500q0 17 11.5 28.5T720-460Zm-80 260v-160H320v160h320Zm80 80H240v-160H80v-240q0-51 35-85.5t85-34.5h560q51 0 85.5 34.5T880-520v240H720v160Zm80-240v-160q0-17-11.5-28.5T760-560H200q-17 0-28.5 11.5T160-520v160h80v-80h480v80h80Z"/></svg></button>';
+                            echo '<button onclick="printPage(\'invoice.php?invoice_id=' . $invoice['id'] . '\')"><svg fill="gray" xmlns="http://www.w3.org/2000/svg" height="40" viewBox="0 -960 960 960" width="40"><path d="M640-640v-120H320v120h-80v-200h480v200h-80Zm-480 80h640-640Zm560 100q17 0 28.5-11.5T760-500q0-17-11.5-28.5T720-540q-17 0-28.5 11.5T680-500q0 17 11.5 28.5T720-460Zm-80 260v-160H320v160h320Zm80 80H240v-160H80v-240q0-51 35-85.5t85-34.5h560q51 0 85.5 34.5T880-520v240H720v160Zm80-240v-160q0-17-11.5-28.5T760-560H200q-17 0-28.5 11.5T160-520v160h80v-80h480v80h80Z"/></svg></button>';
                             echo '</div>';
                             echo '</div>';
                         }
@@ -200,55 +207,111 @@ if(isset($_GET['section'])) {
 
 
         <section class="mx-auto max-w-7xl py-6 w-full" id="maintenanceSection" <?php echo ($display_section == 'maintenance') ? '' : 'style="display: none;"'; ?>>
-        <h2 class="text-2xl font-bold mb-4 mt-4">Maintenance</h2>
-        <button onclick="document.getElementById('maintenanceModal').style.display = 'block'"
-            class="bg-blue-500 text-white py-2 px-4 rounded mb-4">Request Maintenance</button>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            <?php
-            $maintenance_sql = "SELECT * FROM Maintenance WHERE tenant_id = '$tenant_id'";
-            $maintenance_result = $crud->read($maintenance_sql);
+            <h2 class="text-2xl font-bold mb-4 mt-4">Maintenance</h2>
+            <button onclick="document.getElementById('maintenanceModal').style.display = 'block'"
+                class="bg-blue-500 text-white py-2 px-4 rounded mb-4">Request Maintenance</button>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                <?php
+                $maintenance_sql = "SELECT * FROM Maintenance WHERE tenant_id = '$tenant_id'";
+                $maintenance_result = $crud->read($maintenance_sql);
 
-            if($maintenance_result) {
-                foreach($maintenance_result as $maintenance) {
-                    echo '<div class="text-lg shadow-lg rounded-md flex items-center bg-white p-4 h-18 py-10 ">';
-                    echo '<div class="mr-4">';
-                    echo '<span class="mb-4">Description: '.$maintenance['description'].'</span>';
-                    echo '<p>Status: '.$maintenance['status'].'</p>';
-                    echo '<p>Scheduled Date: '.$maintenance['schedule_date'].'</p>';
-                    echo '</div>';
-                    echo '</div>';
+                if ($maintenance_result) {
+                    foreach ($maintenance_result as $maintenance) {
+                        echo '<div class="text-lg shadow-lg rounded-md flex items-center bg-white p-4 h-18 py-10 ">';
+                        echo '<div class="mr-4">';
+                        echo '<span class="mb-4">Description: ' . $maintenance['description'] . '</span>';
+                        echo '<p>Status: ' . $maintenance['status'] . '</p>';
+                        echo '<p>Scheduled Date: ' . $maintenance['schedule_date'] . '</p>';
+                        echo '</div>';
+                        echo '</div>';
+                    }
+                } else {
+                    echo '<p>No ongoing maintenance.</p>';
                 }
-            } else {
-                echo '<p>No ongoing maintenance.</p>';
-            }
-            ?>
+                ?>
+            </div>
+        </section>
+
+        <!-- Maintenance Request Modal -->
+        <div id="maintenanceModal"
+            class="hidden fixed inset-0 bg-gray-700 bg-opacity-75 flex items-center justify-center">
+            <div class="bg-white p-8 rounded shadow w-full sm:w-1/2 m-4">
+                <button type="button" class="absolute top-4 right-4"
+                    onclick="document.getElementById('maintenanceModal').style.display = 'none'" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="text-lg font-bold mb-4">Request Maintenance</h4>
+                <form method="POST" action="path-to-your-maintenance-action.php">
+                    <div class="mb-4">
+                        <label class="block text-sm font-bold mb-2">Description</label>
+                        <textarea class="w-full p-2 border" name="description" required></textarea>
+                    </div>
+                    <div class="flex justify-end">
+                        <button type="button" class="bg-gray-500 text-white py-2 px-4 rounded mr-2"
+                            onclick="document.getElementById('maintenanceModal').style.display = 'none'">Cancel</button>
+                        <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded">Submit</button>
+                    </div>
+                </form>
+            </div>
         </div>
-    </section>
 
-    <!-- Maintenance Request Modal -->
-    <div id="maintenanceModal" class="hidden fixed inset-0 bg-gray-700 bg-opacity-75 flex items-center justify-center">
-        <div class="bg-white p-8 rounded shadow w-full sm:w-1/2 m-4">
-            <button type="button" class="absolute top-4 right-4"
-                onclick="document.getElementById('maintenanceModal').style.display = 'none'" aria-hidden="true">
-                &times;
-            </button>
-            <h4 class="text-lg font-bold mb-4">Request Maintenance</h4>
-            <form method="POST" action="path-to-your-maintenance-action.php">
-                <div class="mb-4">
-                    <label class="block text-sm font-bold mb-2">Description</label>
-                    <textarea class="w-full p-2 border" name="description" required></textarea>
+        <section class="mx-auto max-w-7xl py-6 w-full" id="visitorsSection" <?php echo ($display_section == 'visitors') ? '' : 'style="display: none;"'; ?>>
+            <div class="container mx-auto p-4">
+                <div class="bg-white  p-4 shadow rounded-md ">
+                    <?php
+                    if (isset($_SESSION['message'])) {
+                        echo '<div class="bg-blue-200 text-blue-800 p-4 mb-4">' . $_SESSION['message'] . '</div>';
+                        unset($_SESSION['message']);
+                    }
+                    ?>
+                    <!-- Add New Button -->
+                    <a href="#add" id="openAddModalBtn" class="bg-pallete-400 text-white py-2 px-4 rounded"
+                        onclick="openAddModal()">Add New</a><br><br>
+                    <div class="relative overflow-x-auto ">
+                        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                            <thead class="text-xs text-gray-700 uppercase  ">
+                                <tr>
+                                    <th class="px-6 py-3">ID</th>
+                                    <th class="px-6 py-3">Visitor Name</th>
+                                    <th class="px-6 py-3">Visitor Email</th>
+                                    <th class="px-6 py-3">Visitor Phone</th>
+                                    <th class="px-6 py-3">Visit Date</th>
+                                    <th class="px-6 py-3">Purpose</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Loop through visitors -->
+                                <?php foreach ($visitors as $visitor): ?>
+                                    <tr class="bg-white border-t">
+                                        <td class="w-4 p-4 pl-6">
+                                            <?php echo $visitor['id']; ?>
+                                        </td>
+                                        <td class="w-4 p-4 pl-6">
+                                            <?php echo $visitor['visitor_name']; ?>
+                                        </td>
+                                        <td class="w-4 p-4 pl-6">
+                                            <?php echo $visitor['visitor_email']; ?>
+                                        </td>
+                                        <td class="w-4 p-4 pl-6">
+                                            <?php echo $visitor['visitor_phone']; ?>
+                                        </td>
+                                        <td class="w-4 p-4 pl-6">
+                                            <?php echo $visitor['visit_date']; ?>
+                                        </td>
+                                        <td class="w-4 p-4 pl-6">
+                                            <?php echo $visitor['purpose']; ?>
+                                        </td>
+
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <div class="flex justify-end">
-                    <button type="button" class="bg-gray-500 text-white py-2 px-4 rounded mr-2"
-                        onclick="document.getElementById('maintenanceModal').style.display = 'none'">Cancel</button>
-                    <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded">Submit</button>
-                </div>
-            </form>
-        </div>
-    </div>
+            </div>
+        </section>
 
-
-        
     </main>
     </div>
 
@@ -258,6 +321,7 @@ if(isset($_GET['section'])) {
             document.getElementById('paymentsSection').style.display = (sectionName === 'payments') ? 'block' : 'none';
             document.getElementById('invoicesSection').style.display = (sectionName === 'invoices') ? 'block' : 'none';
             document.getElementById('maintenanceSection').style.display = (sectionName === 'maintenance') ? 'block' : 'none';
+            document.getElementById('visitorsSection').style.display = (sectionName === 'visitors') ? 'block' : 'none';
 
             var listItems = document.getElementById('sectionList').getElementsByTagName('li');
             for (var i = 0; i < listItems.length; i++) {
@@ -276,6 +340,59 @@ if(isset($_GET['section'])) {
         }
     </script>
 
+    <?php
+    $modalId = 'add';
+    $modalTitle = 'Add Visitor';
+    $formAction = '../../actions/visitorAction.php';
+    $submitBtnName = 'add';
+    $submitBtnText = 'Save';
+
+    $formFields = [
+        ['label' => 'Visitor Name', 'name' => 'visitor_name', 'type' => 'text'],
+        ['label' => 'Visitor Email', 'name' => 'visitor_email', 'type' => 'email'],
+        ['label' => 'Visitor Phone', 'name' => 'visitor_phone', 'type' => 'text'],
+        ['label' => 'Visit Date', 'name' => 'visit_date', 'type' => 'date'],
+        ['label' => 'Purpose', 'name' => 'purpose', 'type' => 'text'],
+    ];
+
+    include ('../../components/modal.php');
+    ?>
+
+    <!-- Include Edit and Delete Modals -->
+    <?php foreach ($visitors as $visitor): ?>
+        <?php
+        $modalId = 'edit' . $visitor['id'];
+        $modalTitle = 'Edit Visitor';
+        $formAction = '../../actions/visitorsAction.php?id=' . $visitor['id'];
+        $submitBtnName = 'edit';
+        $submitBtnText = 'Save';
+
+        $formFields = [
+            ['label' => 'ID', 'name' => 'id', 'type' => 'text', 'value' => $visitor['id']],
+            ['label' => 'Visitor Name', 'name' => 'visitor_name', 'type' => 'text', 'value' => $visitor['visitor_name']],
+            ['label' => 'Visitor Email', 'name' => 'visitor_email', 'type' => 'email', 'value' => $visitor['visitor_email']],
+            ['label' => 'Visitor Phone', 'name' => 'visitor_phone', 'type' => 'text', 'value' => $visitor['visitor_phone']],
+            ['label' => 'Visit Date', 'name' => 'visit_date', 'type' => 'date', 'value' => $visitor['visit_date']],
+            ['label' => 'Purpose', 'name' => 'purpose', 'type' => 'text', 'value' => $visitor['purpose']],
+        ];
+
+        include ('../../components/modal.php');
+
+        $modalId = 'delete' . $visitor['id'];
+        $modalTitle = 'Delete Visitor';
+        $formAction = '../../actions/visitorAction.php?tenant_id=' . $_SESSION['tenant_id'];
+        $submitBtnName = 'delete';
+        $submitBtnText = 'Delete';
+
+        $formFields = [
+            ['label' => 'ID', 'name' => 'id', 'type' => 'text', 'value' => $visitor['id']],
+        ];
+
+        include ('../../components/modal.php');
+        ?>
+    <?php endforeach; ?>
+
+    <script src="../../scripts/index.js"></script>
 </body>
 
 </html>

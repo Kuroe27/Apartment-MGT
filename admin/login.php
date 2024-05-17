@@ -12,20 +12,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST['password'];
 
     $crud = new Crud();
-    $sql = "SELECT * FROM Admin WHERE email = '$email'";
+    $sql = "SELECT * FROM Admin WHERE email = '$email' AND password = '$password'";
     $result = $crud->read($sql);
 
     if ($result && count($result) == 1) {
-        $storedPassword = $result[0]['password'];
-
-        if ($password == $storedPassword) {
-            $_SESSION['admin_id'] = $result[0]['id'];
-            header("Location: ./dashboard/");
-            exit();
-        }
+        $_SESSION['admin_id'] = $result[0]['id'];
+        header("Location: ./dashboard/");
+        exit();
+    } else {
+        $error_message = "Invalid email or password.";
     }
-
-    $error_message = "Invalid email or password.";
 }
 ?>
 
