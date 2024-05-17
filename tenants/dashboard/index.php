@@ -197,6 +197,34 @@ if(isset($_GET['section'])) {
                 </div>
             </section>
         </section>
+
+
+        <section class="mx-auto max-w-7xl py-6 w-full" id="maintenanceSection" <?php echo ($display_section == 'maintenance') ? '' : 'style="display: none;"'; ?>>
+    <h2 class="text-2xl font-bold mb-4 mt-4">Maintenance</h2>
+    <button onclick="toggleModal('maintenanceModal')" class="bg-blue-500 text-white py-2 px-4 rounded mb-4">Request Maintenance</button>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <?php
+        $maintenance_sql = "SELECT * FROM Maintenance WHERE tenant_id = '$tenant_id'";
+        $maintenance_result = $crud->read($maintenance_sql);
+
+        if($maintenance_result) {
+            foreach($maintenance_result as $maintenance) {
+                echo '<div class="text-lg shadow-lg rounded-md flex items-center bg-white p-4 h-18 py-10 ">';
+                echo '<div class="mr-4">';
+                echo '<span class="mb-4">Description: '.$maintenance['description'].'</span>';
+                echo '<p>Status: '.$maintenance['status'].'</p>';
+                echo '<p>Scheduled Date: '.$maintenance['schedule_date'].'</p>';
+                echo '</div>';
+                echo '</div>';
+            }
+        } else {
+            echo '<p>No ongoing maintenance.</p>';
+        }
+        ?>
+    </div>
+        </section>
+
+        
     </main>
     </div>
 
@@ -205,6 +233,7 @@ if(isset($_GET['section'])) {
             document.getElementById('dashboardSection').style.display = (sectionName === 'dashboard') ? 'block' : 'none';
             document.getElementById('paymentsSection').style.display = (sectionName === 'payments') ? 'block' : 'none';
             document.getElementById('invoicesSection').style.display = (sectionName === 'invoices') ? 'block' : 'none';
+            document.getElementById('maintenanceSection').style.display = (sectionName === 'maintenance') ? 'block' : 'none';
 
             var listItems = document.getElementById('sectionList').getElementsByTagName('li');
             for (var i = 0; i < listItems.length; i++) {
