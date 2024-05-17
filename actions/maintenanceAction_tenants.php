@@ -21,7 +21,7 @@ if(isset($_POST['addMaintenance'])) {
         $_SESSION['message'] = 'Failed to add maintenance request';
     }
 
-    header('location: ../tenants/dashboard/maintenance.php');
+    header('location: ../tenants/dashboard/index.php');
 } else {
     $_SESSION['message'] = 'Invalid action';
     header('location: ');

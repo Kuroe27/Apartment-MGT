@@ -241,7 +241,7 @@ $visitors = $crud->read($sql);
                     &times;
                 </button>
                 <h4 class="text-lg font-bold mb-4">Request Maintenance</h4>
-                <form method="POST" action="path-to-your-maintenance-action.php">
+                <form method="POST" action="../../actions/maintenanceAction_tenants.php">
                     <div class="mb-4">
                         <label class="block text-sm font-bold mb-2">Description</label>
                         <textarea class="w-full p-2 border" name="description" required></textarea>
@@ -249,7 +249,8 @@ $visitors = $crud->read($sql);
                     <div class="flex justify-end">
                         <button type="button" class="bg-gray-500 text-white py-2 px-4 rounded mr-2"
                             onclick="document.getElementById('maintenanceModal').style.display = 'none'">Cancel</button>
-                        <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded">Submit</button>
+                            <button type="submit" name="addMaintenance" class="bg-blue-500 text-white py-2 px-4 rounded">Submit</button>
+
                     </div>
                 </form>
             </div>
