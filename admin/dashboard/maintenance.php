@@ -1,6 +1,6 @@
 <?php
 session_start();
-include_once('../../conn/Crud.php');
+include_once ('../../conn/Crud.php');
 
 $crud = new Crud();
 $sql = "SELECT m.*, t.id as tenant_id, CONCAT(t.first_name, ' ', t.last_name) as tenant_name, r.id as room_id
@@ -25,7 +25,7 @@ $result = $crud->read($sql);
 </head>
 
 <body class="h-100vh flex">
-    <?php include_once('../../components/sidebar.php') ?>
+    <?php include_once ('../../components/sidebar.php') ?>
 
     <main class="ml-0 sm:ml-60 w-full">
         <nav class="container px-4 h-16 w-full mt-4 z-10 flex items-center text-center justify-center mx-auto">
@@ -67,7 +67,7 @@ $result = $crud->read($sql);
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($result as $row) : ?>
+                            <?php foreach ($result as $row): ?>
                                 <tr class="bg-white border-t">
                                     <td class="w-4 p-4 pl-6">
                                         <?php echo $row['id']; ?>
@@ -95,31 +95,34 @@ $result = $crud->read($sql);
                                                 onclick="openDeleteModal('<?php echo $row['id']; ?>')">
                                         </div>
                                     </td>
-
-                                    <?php
-                                    $modalId = 'edit' . $row['id'];
-                                    $modalTitle = 'Schedule date for maintenance';
-                                    $formAction = '../../actions/maintenanceAction_admin.php?id=' . $row['id'];
-                                    $submitBtnName = 'edit';
-                                    $submitBtnText = 'Submit';
-                                    $formFields = [
-                                        ['label' => 'Schedule Date', 'name' => 'schedule_date', 'type' => 'datetime-local', 'value' => date('Y-m-d\TH:i', strtotime($row['schedule_date']))]
-                                    ];
-                                    include('../../components/modal.php');
-                                    ?>
-
-                                    <?php
-                                    $modalId = 'delete' . $row['id'];
-                                    $modalTitle = 'Are you sure you want to deny this request?';
-                                    $formAction = '../../actions/maintenanceAction_admin.php?id=' . $row['id'];
-                                    $submitBtnName = 'delete';
-                                    $submitBtnText = 'Yes';
-                                    $formFields = [
-                                        ['label' => 'ID', 'name' => 'id', 'type' => 'text', 'value' => $row['id'],'readonly' => true]
-                                    ];
-                                    include('../../components/modal.php');
-                                    ?>
                                 </tr>
+
+                                <!-- Edit Modal -->
+                                <?php
+                                $modalId = 'edit' . $row['id'];
+                                $modalTitle = 'Schedule date for maintenance';
+                                $formAction = '../../actions/maintenanceAction_admin.php';
+                                $submitBtnName = 'edit';
+                                $submitBtnText = 'Submit';
+                                $formFields = [
+                                    ['label' => 'ID', 'name' => 'id', 'type' => 'hidden', 'value' => $row['id']],
+                                    ['label' => 'Schedule Date', 'name' => 'schedule_date', 'type' => 'datetime-local', 'value' => date('Y-m-d\TH:i', strtotime($row['schedule_date']))]
+                                ];
+                                include ('../../components/modal.php');
+                                ?>
+
+                                <!-- Delete Modal -->
+                                <?php
+                                $modalId = 'delete' . $row['id'];
+                                $modalTitle = 'Are you sure you want to deny this request?';
+                                $formAction = '../../actions/maintenanceAction_admin.php';
+                                $submitBtnName = 'delete';
+                                $submitBtnText = 'Yes';
+                                $formFields = [
+                                    ['label' => 'ID', 'name' => 'id', 'type' => 'hidden', 'value' => $row['id']]
+                                ];
+                                include ('../../components/modal.php');
+                                ?>
                             <?php endforeach; ?>
                         </tbody>
                     </table>
