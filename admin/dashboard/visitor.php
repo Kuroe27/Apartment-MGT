@@ -6,7 +6,7 @@ $crud = new Crud();
 
 // Fetch only the records associated with the current tenant
 $tenant_id = $_SESSION['tenant_id'];
-$sql = "SELECT * FROM Visitor_Log WHERE tenant_id = '$tenant_id'";
+$sql = "SELECT * FROM Visitor_Log";
 $visitors = $crud->read($sql);
 ?>
 
